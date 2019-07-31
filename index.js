@@ -28,6 +28,11 @@ var io = require('socket.io')(http);
 //     });
 // });
 
+var options = {
+  key: fs.readFileSync('/etc/apache2/ssl/mibot.key.pem'),
+  cert: fs.readFileSync('/etc/apache2/ssl/1e771d627c3cca1a.crt.pem')
+};
+
 io.on('connection', function (socket) {
     console.log('Conexion: ' + socket.id);
     socket.on('disconnect', function () {
@@ -45,6 +50,6 @@ io.on('connection', function (socket) {
     });
 });
 
-http.listen(3000, function () {
+https.createServer(options).listen(3000, function () {
     console.log('listening on *:3000');
 });
