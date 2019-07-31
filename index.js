@@ -7,7 +7,11 @@ var options = {
 };
 var https = require('https').createServer(options,app);
 var io = require('socket.io')(https);
+var ini = require('ini')
 
+const config = ini.parse(fs.readFileSync('/etc/var/wwww/html/class/db/conf.ini', 'utf-8'));
+
+console.log('Configuraciones: '+config);
 
 io.on('connection', function (socket) {
     socket.on('disconnect', function () {
