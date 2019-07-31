@@ -1,5 +1,10 @@
 var app = require('express')();
-var https = require('https');
+
+var options = {
+  key: fs.readFileSync('/etc/apache2/ssl/mibot.key.pem'),
+  cert: fs.readFileSync('/etc/apache2/ssl/1e771d627c3cca1a.crt.pem')
+};
+var https = require('https').createServer(options,app);
 var io = require('socket.io')(https);
 var fs = require('fs');
 // io.on('connection', function (socket) {
@@ -27,11 +32,6 @@ var fs = require('fs');
 //         console.log(socket.name + ' joined the chat.');
 //     });
 // });
-
-var options = {
-  key: fs.readFileSync('/etc/apache2/ssl/mibot.key.pem'),
-  cert: fs.readFileSync('/etc/apache2/ssl/1e771d627c3cca1a.crt.pem')
-};
 
 io.on('connection', function (socket) {
     console.log('Conexion: ' + socket.id);
