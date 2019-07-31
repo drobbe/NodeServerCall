@@ -50,6 +50,6 @@ io.on('connection', function (socket) {
     });
 });
 
-https.createServer(options).listen(3000, function () {
+https.createServer(options,app).listen(3000, function () {
     console.log('listening on *:3000');
 });
