@@ -1,12 +1,12 @@
 var app = require('express')();
 
+var fs = require('fs');
 var options = {
   key: fs.readFileSync('/etc/apache2/ssl/mibot.key.pem'),
   cert: fs.readFileSync('/etc/apache2/ssl/1e771d627c3cca1a.crt.pem')
 };
 var https = require('https').createServer(options,app);
 var io = require('socket.io')(https);
-var fs = require('fs');
 // io.on('connection', function (socket) {
 //     //console.log('a user connected');
 
@@ -50,6 +50,6 @@ io.on('connection', function (socket) {
     });
 });
 
-https.createServer(options,app).listen(3000, function () {
+https.listen(3000, function () {
     console.log('listening on *:3000');
 });
