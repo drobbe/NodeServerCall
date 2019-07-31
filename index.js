@@ -18,7 +18,8 @@ var mysql = require('mysql');
 var con = mysql.createConnection({
     host: "localhost",
     user: config.sigma.userDB,
-    password: config.sigma.passDB
+    password: config.sigma.passDB,
+    database:config.sigma.DB
 });
 
 con.connect(function(err) {
