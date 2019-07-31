@@ -1,6 +1,6 @@
 var app = require('express')();
 var https = require('https').createServer(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(https);
 var fs = require('fs');
 // io.on('connection', function (socket) {
 //     //console.log('a user connected');
