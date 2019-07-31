@@ -30,7 +30,7 @@ con.connect(function(err) {
 
 io.on('connection', function (socket) {
     socket.on('disconnect', function () {
-        con.query('Update agente set status = 4 where usuario = ?',usuario, function (err, result) {
+        con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -40,7 +40,7 @@ io.on('connection', function (socket) {
     socket.on('join', function (usuario) {
         socket.usuario = usuario;
         
-        con.query('Update agente set status = 3 where usuario = ?',usuario, function (err, result) {
+        con.query('Update agente set status = 3 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
