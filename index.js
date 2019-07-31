@@ -11,7 +11,20 @@ var ini = require('ini')
 
 const config = ini.parse(fs.readFileSync('/var/www/html/class/db/conf.ini', 'utf-8'));
 
-console.log('Configuraciones: '+config);
+console.log('Configuraciones: '+config.sigma.userDB);
+
+var mysql = require('mysql');
+
+var con = mysql.createConnection({
+  host: "localhost",
+  user: config.sigma.userDB,
+  password: config.sigma.passDB
+});
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
 
 io.on('connection', function (socket) {
     socket.on('disconnect', function () {
