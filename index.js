@@ -7,7 +7,20 @@ var options = {
 };
 var https = require('https').createServer(options,app);
 var io = require('socket.io')(https);
-var ini = require('ini')
+var ini = require('ini');
+
+
+var aio = require('asterisk.io');
+var ami = null;
+
+ami = aio.ami('localhost',5038,'lponce','lponce');
+
+
+ami.on('error', function(err){
+    err = JSON.parse(JSON.stringify(err));
+    console.log(err);
+});
+
 
 const config = ini.parse(fs.readFileSync('/var/www/html/class/db/conf.ini', 'utf-8'));
 
