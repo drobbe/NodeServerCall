@@ -65,6 +65,10 @@ io.on('connection', function (socket) {
     });
 });
 
+ami.on('eventBridge', function(data){
+    console.log('eventBridge', data);
+});
+
 https.listen(3000, function () {
     console.log('listening on *:3000');
 });
