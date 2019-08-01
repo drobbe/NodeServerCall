@@ -69,6 +69,10 @@ ami.on('eventBridge', function(data){
     console.log('eventBridge', data);
 });
 
+ami.on('eventAny', function(data){
+    console.log(data.Event, data);
+});
+
 https.listen(3000, function () {
     console.log('listening on *:3000');
 });
