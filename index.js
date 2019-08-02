@@ -49,10 +49,10 @@ io.on('connection', function (socket) {
         });
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
     });
-    
+
     socket.on('join', function (usuario) {
         socket.usuario = usuario;
-        
+
         con.query('Update agente set status = 3 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -65,12 +65,15 @@ io.on('connection', function (socket) {
     });
 });
 
-ami.on('DialState', function(data){
-    console.log('DialState', data);
+ami.on('eventBridgeEnter', function(data){
+    if(data.Context == 'from-internal'){
+        agente = str.split("-").pop();
+        console.log(agente);
+    }
 });
 
 ami.on('eventAny', function(data){
-   // console.log(data.Event, data);
+    //console.log(data.Event, data);
 });
 
 https.listen(3000, function () {
