@@ -67,7 +67,7 @@ io.on('connection', function (socket) {
 
 ami.on('eventBridgeEnter', function(data){
     if(data.Context == 'from-internal'){
-        agente = str.split("-").pop();
+        agente = data.Channel.split("-").pop();
         console.log(agente);
     }
 });
