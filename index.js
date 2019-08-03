@@ -21,6 +21,7 @@ ami.on('error', function(err){
     console.log(err);
 });
 
+var clientes = new Object();
 
 const config = ini.parse(fs.readFileSync('/var/www/html/class/db/conf.ini', 'utf-8'));
 
@@ -68,7 +69,14 @@ io.on('connection', function (socket) {
 ami.on('eventBridgeEnter', function(data){
     if(data.Context == 'from-internal'){
         agente = data.Channel.split("-")[0].split("/")[1];
-        console.log(agente);
+        console.log(agente+" ha recibido llamado");
+    }
+});
+
+ami.on('eventHangup', function(data){
+    if(data.Context == 'from-internal'){
+        agente = data.Channel.split("-")[0].split("/")[1];
+        console.log(agente+" ha terminado la llamada");
     }
 });
 
