@@ -88,7 +88,7 @@ ami.on('eventHangup', function(data){
         agente = data.Channel.split("-")[0].split("/")[1];
         console.log(agente+" ha terminado la llamada");
         console.log(clientes[agente].sockedId);
-        io.to(clientes[agente].sockedId).emit("inboundDataExtension", { Data: Data });
+        io.to(clientes[agente].sockedId).emit("llamadaTerminada", { Data: data });
     }
 });
 
