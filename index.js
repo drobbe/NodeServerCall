@@ -48,10 +48,9 @@ io.on('connection', function (socket) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-        console.log(socket.name.usuario + ' se desconecto del chat.' + socket.id);
+        console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
         delete clientes[sockedId];
 
-        console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
     });
 
     socket.on('join', function (usuario) {
