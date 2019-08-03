@@ -68,7 +68,7 @@ io.on('connection', function (socket) {
     });
 
     socket.on('baño', function (msg) {
-        con.query('Update agente set status = 3 where usuario = ?',socket.usuario, function (err, result) {
+        con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -86,14 +86,16 @@ ami.on('eventBridgeEnter', function(data){
 ami.on('eventHangup', function(data){
     if(data.Context == 'from-internal'){
         agente = data.Channel.split("-")[0].split("/")[1];
-        console.log(agente+" ha terminado la llamada");
-        console.log(clientes[agente].sockedId);
+        con.query('Update agente set status = 3 where usuario = ?',socket.usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+        });
         io.to(clientes[agente].sockedId).emit("llamadaTerminada", { Data: data });
     }
 });
 
 ami.on('eventAny', function(data){
-    //console.log(data.Event, data);
+    console.log(data.Event, data);
 });
 
 https.listen(3000, function () {
