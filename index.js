@@ -93,7 +93,7 @@ ami.on('eventBridgeEnter', function(data){
 
 ami.on('eventHangup', function(data){
     if(data.Context == 'from-internal'){
-        agente = data.Channel.split("-")[0].split("/")[1];
+        usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" termino llamado");
         clientes[usuario].status = 4;
         clientes[usuario].tiempo = -1;
@@ -108,7 +108,7 @@ ami.on('eventHangup', function(data){
 
 ami.on('eventNewchannel', function(data){
     if(data.Context == 'from-internal'){
-        agente = data.Channel.split("-")[0].split("/")[1];
+        usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha recibido llamado");
         clientes[usuario].status = 2;
         clientes[usuario].tiempo = -1;
