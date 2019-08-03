@@ -78,8 +78,9 @@ io.on('connection', function (socket) {
 
 ami.on('eventBridgeEnter', function(data){
     if(data.Context == 'from-internal'){
-        agente = data.Channel.split("-")[0].split("/")[1];
-        console.log(agente+" ha recibido llamado");
+        usuario = data.Channel.split("-")[0].split("/")[1];
+        console.log(usuario+" ha recibido llamado");
+        clientes[usuario].status = 3;
     }
 });
 
@@ -91,6 +92,7 @@ ami.on('eventHangup', function(data){
             console.log("Result: " + result);
         });
         io.to(clientes[agente].sockedId).emit("llamadaTerminada", { Data: data });
+
     }
 });
 
