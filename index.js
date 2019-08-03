@@ -83,7 +83,7 @@ ami.on('eventBridgeEnter', function(data){
         console.log(usuario+" ha contesto llamado");
         clientes[usuario].status = 2;
         clientes[usuario].tiempo = -1;
-        con.query('Update agente set status = 2 where usuario = ?',socket.usuario, function (err, result) {
+        con.query('Update agente set status = 2 where usuario = ?',usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -97,7 +97,7 @@ ami.on('eventHangup', function(data){
         console.log(usuario+" termino llamado");
         clientes[usuario].status = 4;
         clientes[usuario].tiempo = -1;
-        con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
+        con.query('Update agente set status = 4 where usuario = ?',usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -113,7 +113,7 @@ ami.on('eventNewchannel', function(data){
         clientes[usuario].status = 2;
         clientes[usuario].tiempo = -1;
 
-        con.query('Update agente set status = 2 where usuario = ?',socket.usuario, function (err, result) {
+        con.query('Update agente set status = 2 where usuario = ?',usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
