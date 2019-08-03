@@ -73,7 +73,7 @@ ami.on('eventBridgeEnter', function(data){
 });
 
 ami.on('eventAny', function(data){
-    //console.log(data.Event, data);
+    console.log(data.Event, data);
 });
 
 https.listen(3000, function () {
