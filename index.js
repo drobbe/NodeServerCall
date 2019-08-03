@@ -64,7 +64,7 @@ io.on('connection', function (socket) {
         clientes[usuario] = {"sockedId": socket.id};
         clientes[usuario].status = 1;
         clientes[usuario].nombre = usuario;
-        clientes[usuario].tiempo = usuario;
+        clientes[usuario].tiempo = 1;
 
     });
 
@@ -82,7 +82,7 @@ ami.on('eventBridgeEnter', function(data){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha contesto llamado");
         clientes[usuario].status = 2;
-        clientes[usuario].status = 1;
+        clientes[usuario].tiempo = 1;
         con.query('Update agente set status = 2 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -96,7 +96,7 @@ ami.on('eventHangup', function(data){
         agente = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" termino llamado");
         clientes[usuario].status = 4;
-        clientes[usuario].status = 1;
+        clientes[usuario].tiempo = 1;
         con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -111,7 +111,7 @@ ami.on('eventNewchannel', function(data){
         agente = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha recibido llamado");
         clientes[usuario].status = 2;
-        clientes[usuario].status = 1;
+        clientes[usuario].tiempo = 1;
 
         con.query('Update agente set status = 2 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
@@ -132,7 +132,7 @@ https.listen(3000, function () {
 
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
-
+    clientes[key].tiempo = clientes[key].tiempo + 1;
     console.log(key, clientes[key]);
 
     });
