@@ -87,7 +87,7 @@ ami.on('eventBridgeEnter', function(data){
             if (err) throw err;
             console.log("Result: " + result);
         });
-        io.to(clientes[agente].sockedId).emit("llamadaContestada", { Data: data })
+        io.to(clientes[usuario].sockedId).emit("llamadaContestada", { Data: data })
     }
 });
 
@@ -101,7 +101,7 @@ ami.on('eventHangup', function(data){
             if (err) throw err;
             console.log("Result: " + result);
         });
-        io.to(clientes[agente].sockedId).emit("llamadaTerminada", { Data: data });
+        io.to(clientes[usuario].sockedId).emit("llamadaTerminada", { Data: data });
 
     }
 });
@@ -117,7 +117,7 @@ ami.on('eventNewchannel', function(data){
             if (err) throw err;
             console.log("Result: " + result);
         });
-        io.to(clientes[agente].sockedId).emit("llamadaConectada", { Data: data });
+        io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
 
     }
 });
