@@ -64,11 +64,12 @@ io.on('connection', function (socket) {
         clientes[usuario] = {"sockedId": socket.id};
         clientes[usuario].status = 1;
         clientes[usuario].nombre = usuario;
+        clientes[usuario].tiempo = usuario;
 
     });
 
     socket.on('baño', function (msg) {
-        con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
+        con.query('Update agente set status = 5 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -79,15 +80,24 @@ io.on('connection', function (socket) {
 ami.on('eventBridgeEnter', function(data){
     if(data.Context == 'from-internal'){
         usuario = data.Channel.split("-")[0].split("/")[1];
-        console.log(usuario+" ha recibido llamado");
-        clientes[usuario].status = 3;
+        console.log(usuario+" ha contesto llamado");
+        clientes[usuario].status = 2;
+        clientes[usuario].status = 1;
+        con.query('Update agente set status = 2 where usuario = ?',socket.usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+        });
+        io.to(clientes[agente].sockedId).emit("llamadaContestada", { Data: data })
     }
 });
 
 ami.on('eventHangup', function(data){
     if(data.Context == 'from-internal'){
         agente = data.Channel.split("-")[0].split("/")[1];
-        con.query('Update agente set status = 3 where usuario = ?',socket.usuario, function (err, result) {
+        console.log(usuario+" termino llamado");
+        clientes[usuario].status = 4;
+        clientes[usuario].status = 1;
+        con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -96,8 +106,24 @@ ami.on('eventHangup', function(data){
     }
 });
 
+ami.on('eventNewchannel', function(data){
+    if(data.Context == 'from-internal'){
+        agente = data.Channel.split("-")[0].split("/")[1];
+        console.log(usuario+" ha recibido llamado");
+        clientes[usuario].status = 2;
+        clientes[usuario].status = 1;
+
+        con.query('Update agente set status = 2 where usuario = ?',socket.usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+        });
+        io.to(clientes[agente].sockedId).emit("llamadaConectada", { Data: data });
+
+    }
+});
+
 ami.on('eventAny', function(data){
-    console.log(data.Event, data);
+   // console.log(data.Event, data);
 });
 
 https.listen(3000, function () {
@@ -105,6 +131,10 @@ https.listen(3000, function () {
 });
 
 function verficiarUsuarios() {
-    console.log(clientes);
+    Object.keys(clientes).forEach(function(key) {
+
+    console.log(key, clientes[key]);
+
+    });
 }
 setInterval(verficiarUsuarios, 1000);
