@@ -44,25 +44,36 @@ con.connect(function(err) {
 
 io.on('connection', function (socket) {
     socket.on('disconnect', function () {
-        con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
+        con.query('Update agente set status = 0 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
+        console.log(socket.name.usuario + ' se desconecto del chat.' + socket.id);
+        delete clientes[sockedId];
+
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
     });
 
     socket.on('join', function (usuario) {
         socket.usuario = usuario;
 
-        con.query('Update agente set status = 3 where usuario = ?',socket.usuario, function (err, result) {
+        con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
         console.log(socket.usuario + ' se ha conectado.');
+        clientes[usuario].sockedId = socket.id;
+        clientes[usuario].status = 1;
+        clientes[usuario].nombre = usuario;
+
     });
 
-    socket.on('message', function (msg) {
-        io.emit('username', msg);
+    socket.on('baño', function (msg) {
+        con.query('Update agente set status = 3 where usuario = ?',socket.usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+        });
+        console.log(socket.usuario + ' se ha puesto en pausa');
     });
 });
 
@@ -87,3 +98,8 @@ ami.on('eventAny', function(data){
 https.listen(3000, function () {
     console.log('listening on *:3000');
 });
+
+function verficiarUsuarios() {
+    console.log(clientes);
+}
+setInterval(verficiarUsuarios, 1000);
