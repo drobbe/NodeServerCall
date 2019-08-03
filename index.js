@@ -49,7 +49,7 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
-        delete clientes[sockedId];
+        delete clientes[socket.usuario];
 
     });
 
@@ -61,8 +61,7 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
         console.log(socket.usuario + ' se ha conectado.');
-        //clientes[usuario].sockedId = socket.id;
-        clientes[usuario]  = {"sockedId": socket.id};
+        clientes[usuario] = {"sockedId": socket.id};
         clientes[usuario].status = 1;
         clientes[usuario].nombre = usuario;
 
