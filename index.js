@@ -87,7 +87,8 @@ ami.on('eventHangup', function(data){
     if(data.Context == 'from-internal'){
         agente = data.Channel.split("-")[0].split("/")[1];
         console.log(agente+" ha terminado la llamada");
-        console.log(clientes[agente]);
+        console.log(clientes[agente].sockedId);
+        io.to(clientes[agente].sockedId).emit("inboundDataExtension", { Data: Data });
     }
 });
 
