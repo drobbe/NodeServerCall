@@ -62,7 +62,8 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
         console.log(socket.usuario + ' se ha conectado.');
-        clientes[usuario].sockedId = socket.id;
+        //clientes[usuario].sockedId = socket.id;
+        clientes[usuario]  = {"sockedId": socket.id};
         clientes[usuario].status = 1;
         clientes[usuario].nombre = usuario;
 
