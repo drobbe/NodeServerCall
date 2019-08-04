@@ -138,3 +138,7 @@ function verficiarUsuarios() {
     });
 }
 setInterval(verficiarUsuarios, 1000);
+
+app.get('/usuarios', function(req, res) {
+  res.send(clientes);
+});
