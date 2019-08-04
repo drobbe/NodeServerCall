@@ -83,7 +83,7 @@ ami.on('eventBridgeEnter', function(data){
         console.log(usuario+" ha contesto llamado");
         clientes[usuario].status = 3;
         clientes[usuario].tiempo = -1;
-        con.query('Update agente set status =  where usuario = ?',usuario, function (err, result) {
+        con.query('Update agente set status = 3 where usuario = ?',usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
