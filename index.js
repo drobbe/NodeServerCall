@@ -81,9 +81,9 @@ ami.on('eventBridgeEnter', function(data){
     if(data.Context == 'from-internal'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha contesto llamado");
-        clientes[usuario].status = 2;
+        clientes[usuario].status = 3;
         clientes[usuario].tiempo = -1;
-        con.query('Update agente set status = 2 where usuario = ?',usuario, function (err, result) {
+        con.query('Update agente set status =  where usuario = ?',usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -142,3 +142,10 @@ setInterval(verficiarUsuarios, 1000);
 app.get('/usuarios', function(req, res) {
   res.send(clientes);
 });
+
+app.get('/usuarios/:id', function(req, res) {
+
+  console.log(req.params);
+  console.log(req.query);
+
+})
