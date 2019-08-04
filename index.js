@@ -83,7 +83,7 @@ ami.on('eventBridgeEnter', function(data){
         console.log(usuario+" ha contesto llamado");
         clientes[usuario].status = 3;
         clientes[usuario].tiempo = -1;
-        con.query('Update agente set status = 3 where usuario = ?',usuario, function (err, result) {
+        con.query('Update agente set status =  where usuario = ?',usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -143,16 +143,16 @@ app.get('/usuarios', function(req, res) {
   res.send(clientes);
 });
 
-app.get('/usuario/:usuario/reanudar', function(req, res) {
+app.get('/usuario/:id/reanudar', function(req, res) {
 
   console.log(req.params);
   console.log(req.query);
-  clientes[usuario].status = 1;
-  clientes[usuario].tiempo = -1;
-  con.query('Update agente set status = 1 where usuario = ?',usuario, function (err, result) {
+  clientes[id].status = 1;
+  clientes[id].tiempo = -1;
+  con.query('Update agente set status = 1 where usuario = ?',id, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-  res.send(clientes[usuario]);
+  res.send(clientes[id]);
 
 })
