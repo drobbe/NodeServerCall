@@ -130,6 +130,25 @@ https.listen(3000, function () {
     console.log('listening on *:3000');
 });
 
+
+app.get('/usuarios', function(req, res) {
+  res.send(clientes);
+});
+
+app.get('/usuario/:usuario/reanudar', function(req, res) {
+
+    usuario = req.params.usuario;
+
+    clientes[usuario].status = 1;
+    clientes[usuario].tiempo = -1;
+     con.query('Update agente set status = 1 where usuario = ?',usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+        });
+    res.send(clientes[usuario]);
+
+})
+
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
     clientes[key].tiempo = clientes[key].tiempo + 1;
@@ -138,21 +157,3 @@ function verficiarUsuarios() {
     });
 }
 setInterval(verficiarUsuarios, 1000);
-
-app.get('/usuarios', function(req, res) {
-  res.send(clientes);
-});
-
-app.get('/usuario/:id/reanudar', function(req, res) {
-
-  console.log(req.params);
-  console.log(req.query);
-  clientes[id].status = 1;
-  clientes[id].tiempo = -1;
-  con.query('Update agente set status = 1 where usuario = ?',id, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
-  res.send(clientes[id]);
-
-})
