@@ -143,7 +143,7 @@ app.get('/usuarios', function(req, res) {
   res.send(clientes);
 });
 
-app.get('/usuarios/:id', function(req, res) {
+app.get('/usuario/:id/reanudar', function(req, res) {
 
   console.log(req.params);
   console.log(req.query);
