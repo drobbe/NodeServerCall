@@ -132,7 +132,7 @@ https.listen(3000, function () {
 
 
 app.get('/usuarios', function(req, res) {
-  res.status(200).json({ clientes});
+    res.end('{"success" : "Updated Successfully", "status" : 200}');
 });
 
 app.get('/usuario/:usuario/reanudar', function(req, res) {
@@ -141,18 +141,18 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 
     clientes[usuario].status = 1;
     clientes[usuario].tiempo = -1;
-     con.query('Update agente set status = 1 where usuario = ?',usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
-    res.status(200).send(clientes[usuario]);
+    con.query('Update agente set status = 1 where usuario = ?',usuario, function (err, result) {
+        if (err) throw err;
+        console.log("Result: " + result);
+    });
+    res.send(clientes[usuario]);
 
 })
 
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
-    clientes[key].tiempo = clientes[key].tiempo + 1;
-    console.log(key, clientes[key]);
+        clientes[key].tiempo = clientes[key].tiempo + 1;
+        console.log(key, clientes[key]);
 
     });
 }
