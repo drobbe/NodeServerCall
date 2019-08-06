@@ -130,6 +130,16 @@ https.listen(3000, function () {
     console.log('listening on *:3000');
 });
 
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET');
+
+    next();
+});
 
 app.get('/usuarios', function(req, res) {
   res.status(200).json({ clientes});
