@@ -132,7 +132,7 @@ https.listen(3000, function () {
 
 
 app.get('/usuarios', function(req, res) {
-  res.send(clientes);
+  res.status(200).json({ clientes});
 });
 
 app.get('/usuario/:usuario/reanudar', function(req, res) {
@@ -147,7 +147,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         });
     res.send(clientes[usuario]);
 
-})
+}).status(200)
 
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
