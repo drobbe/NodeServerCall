@@ -132,7 +132,7 @@ https.listen(3000, function () {
 
 
 app.get('/usuarios', function(req, res) {
-  res.json({ clientes});
+  res.send({ hello: 'world' });
 });
 
 app.get('/usuario/:usuario/reanudar', function(req, res) {
