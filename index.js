@@ -145,7 +145,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-    res.send(clientes[usuario]);
+    res.status(200).send(clientes[usuario]);
 
 })
 
