@@ -147,7 +147,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         });
     res.send(clientes[usuario]);
 
-}).status(200)
+})
 
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
