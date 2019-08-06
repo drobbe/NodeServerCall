@@ -3,7 +3,7 @@ var app = require('express')();
 var fs = require('fs');
 var options = {
     key: fs.readFileSync('/etc/apache2/ssl/mibot.key.pem'),
-    cert: fs.readFileSync('/etc/apache2/ssl/fc89aa986b3d35e5.crt.pem')
+    cert: fs.readFileSync('/etc/apache2/ssl/1e771d627c3cca1a.crt.pem')
 };
 var https = require('https').createServer(options,app);
 var io = require('socket.io')(https);
@@ -146,7 +146,7 @@ https.listen(3000, function () {
 
 
 app.get('/usuarios', function(req, res) {
-  res.send(clientes);
+  res.status(200).json({ clientes});
 });
 
 app.get('/usuario/:usuario/reanudar', function(req, res) {
@@ -159,7 +159,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-    res.send(clientes[usuario]);
+    res.status(200).send(clientes[usuario]);
 
 })
 
