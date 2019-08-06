@@ -3,7 +3,7 @@ var app = require('express')();
 var fs = require('fs');
 var options = {
     key: fs.readFileSync('/etc/apache2/ssl/mibot.key.pem'),
-    cert: fs.readFileSync('/etc/apache2/ssl/fc89aa986b3d35e5.crt.pem')
+    cert: fs.readFileSync('/etc/apache2/ssl/1e771d627c3cca1a.crt.pem')
 };
 var https = require('https').createServer(options,app);
 var io = require('socket.io')(https);
