@@ -53,32 +53,19 @@ io.on('connection', function (socket) {
 
     });
 
-    socket.on('join', function (usuario, campana) {
+    socket.on('join', function (usuario) {
         socket.usuario = usuario;
-        socket.campana = campana;
 
         con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-        console.log(socket.usuario + ' se ha conectado.' + socket.campana);
+        console.log(socket.usuario + ' se ha conectado.');
         clientes[usuario] = {"sockedId": socket.id};
         clientes[usuario].status = 1;
         clientes[usuario].nombre = usuario;
-        clientes[usuario].campana = campana
         clientes[usuario].tiempo = -1;
 
-    });
-
-    // Ej FOCO
-    socket.on("hangUpInbound", function (Data) {
-        var Channel = Data.Channel;
-        ami.action('Hangup', { Channel: Channel },
-            function (data) {
-                console.log(data);
-                console.log("evt hangUpInbound");
-            }
-        );
     });
 
     socket.on('baño', function (msg) {
@@ -115,7 +102,6 @@ ami.on('eventHangup', function(data){
             console.log("Result: " + result);
         });
         io.to(clientes[usuario].sockedId).emit("llamadaTerminada", { Data: data });
-        
 
     }
 });
@@ -146,7 +132,7 @@ https.listen(3000, function () {
 
 
 app.get('/usuarios', function(req, res) {
-    res.end('{"success" : "Updated Successfully", "status" : 200}');
+    res.json({success : "Updated Successfully", status : 200});
 });
 
 app.get('/usuario/:usuario/reanudar', function(req, res) {
