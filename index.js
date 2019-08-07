@@ -168,7 +168,7 @@ app.get('/asterisk/reload', function(req, res) {
     ami.action(
         'Reload',
         {
-            Module: 'SIP',
+            Module: 'sip',
         },
         function(data){
             if(data.Response == 'Error'){
