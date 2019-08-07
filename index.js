@@ -184,6 +184,23 @@ app.get('/usuarios', function(req, res) {
     res.status(200).json({ clientes});
 });
 
+app.get('/asterisk/reload', function(req, res) {
+    ami.action(
+        'Reload',
+        {
+            Module: 'chan_sip.so',
+        },
+        function(data){
+            if(data.Response == 'Error'){
+                console.log('Mal Reload', data.Message);
+                res.status(200).json({ data});
+            }
+            console.log('Reload', data.Message);
+            res.status(200).json({ data});
+        }
+    );
+});
+
 app.get('/usuario/:usuario/reanudar', function(req, res) {
 
     usuario = req.params.usuario;
