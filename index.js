@@ -67,8 +67,8 @@ io.on('connection', function (socket) {
         clientes[usuario] = {"sockedId": socket.id};
         clientes[usuario].status = 1;
         clientes[usuario].nombre = usuario;
-        clientes[usuario].idcampana = idcampana
-        clientes[usuario].nombreCampana = nomcampana
+        clientes[usuario].idcampana = idcampana;
+        clientes[usuario].nombreCampana = nomcampana;
         clientes[usuario].tiempo = -1;
 
     });
