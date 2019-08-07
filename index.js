@@ -74,16 +74,32 @@ io.on('connection', function (socket) {
     });
 
     // Ej FOCO
+    // Probar si es cuando cliente cuelga llamada
     socket.on("hangUpInbound", function (Data) {
+        // Channel => SIP/usuario1-aav43
         var Channel = Data.Channel;
         ami.action('Hangup', { Channel: Channel },
             function (data) {
-                console.log(data);
                 console.log("evt hangUpInbound");
-            }
-            );
-    });
+                console.log(data);
 
+                // Si llega al evento cambiamos el 'status' a 4
+                /* usuario = data.Channel.split("-")[0].split("/")[1];
+                console.log(usuario + "cliente colgo llamada"); // text prueba para saber ingreso de evento
+                clientes[usuario].status = 4;
+                clientes[usuario].tiempo = -1;
+
+                con.query('Update agente set status = 4 where usuario = ?', usuario, function (err, result) {
+                    if (err) throw err;
+                    console.log("Result: " + result);
+                }); */
+                
+                // Redireccionar al evento donde cambia el estado
+                io.to(clientes[usuario].sockedId).emit("eventHangup", {Data: data});
+            }
+        );
+    });
+ 
     socket.on('baño', function (msg) {
         con.query('Update agente set status = 5 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
@@ -113,7 +129,10 @@ ami.on('eventHangup', function(data){
         console.log(usuario+" termino llamado");
         clientes[usuario].status = 4;
         clientes[usuario].tiempo = -1;
-        con.query('Update agente set status = 4 where usuario = ?',usuario, function (err, result) {
+        // Posible solucion agregar parametro, actualizar solo cuando sea status 3 (llamada) 
+        // and status = ?
+        // [usuario,3]
+        con.query('Update agente set status = 4 where usuario = ? ', usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -140,7 +159,8 @@ ami.on('eventNewchannel', function(data){
 });
 
 ami.on('eventAny', function(data){
-   // console.log(data.Event, data);
+   // Capturamos evento de asterisk
+   console.log(data.Event, data);
 });
 
 https.listen(3000, function () {
