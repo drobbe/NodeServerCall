@@ -173,9 +173,10 @@ app.get('/asterisk/reload', function(req, res) {
         function(data){
             if(data.Response == 'Error'){
                 console.log('Mal Reload', data.Message);
-                return;
+                res.status(200).json({ data});
             }
             console.log('Reload', data.Message);
+            res.status(200).json({ data});
         }
     );
 });
