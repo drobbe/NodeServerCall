@@ -164,6 +164,22 @@ app.get('/usuarios', function(req, res) {
     res.status(200).json({ clientes});
 });
 
+app.get('/asterisk/reload', function(req, res) {
+    ami.action(
+        'Reload',
+        {
+            Module: 'SIP',
+        },
+        function(data){
+            if(data.Response == 'Error'){
+                console.log('Mal Reload', data.Message);
+                return;
+            }
+            console.log('Reload', data.Message);
+        }
+    );
+});
+
 app.get('/usuario/:usuario/reanudar', function(req, res) {
 
     usuario = req.params.usuario;
