@@ -1,9 +1,13 @@
 var app = require('express')();
 
 var fs = require('fs');
+const config = ini.parse(fs.readFileSync('/var/www/html/class/db/conf.ini', 'utf-8'));
+
+console.log('Configuraciones: '+config.sigma.userDB);
+
 var options = {
     key: fs.readFileSync('/etc/apache2/ssl/mibot.key.pem'),
-    cert: fs.readFileSync('/etc/apache2/ssl/fc89aa986b3d35e5.crt.pem')
+    cert: fs.readFileSync(config.sigma.certNode)
 };
 var https = require('https').createServer(options,app);
 var io = require('socket.io')(https);
@@ -23,9 +27,6 @@ ami.on('error', function(err){
 
 var clientes = new Object();
 
-const config = ini.parse(fs.readFileSync('/var/www/html/class/db/conf.ini', 'utf-8'));
-
-console.log('Configuraciones: '+config.sigma.userDB);
 
 var mysql = require('mysql');
 
