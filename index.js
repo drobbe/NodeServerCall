@@ -1,6 +1,7 @@
 var app = require('express')();
 
 var fs = require('fs');
+var ini = require('ini');
 const config = ini.parse(fs.readFileSync('/var/www/html/class/db/conf.ini', 'utf-8'));
 
 console.log('Configuraciones: '+config.sigma.userDB);
@@ -11,7 +12,6 @@ var options = {
 };
 var https = require('https').createServer(options,app);
 var io = require('socket.io')(https);
-var ini = require('ini');
 
 
 var aio = require('asterisk.io');
