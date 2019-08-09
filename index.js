@@ -74,8 +74,8 @@ io.on('connection', function (socket) {
     });
 
     socket.on('pausa', function (estado) {
-        socket.estado = estado;
-        socket.status = 4;
+        clientes[usuario].estado = estado;
+        clientes[usuario].status = 4;
         con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -85,9 +85,9 @@ io.on('connection', function (socket) {
     });    
 
     socket.on('reanudar', function (estado) {
-        socket.estado = '';
-        socket.status = 1;
-        socket.tiempo = -1;
+        clientes[usuario].socket.estado = '';
+        clientes[usuario].status = 1;
+        clientes[usuario].tiempo = -1;
         con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
