@@ -87,7 +87,7 @@ io.on('connection', function (socket) {
 
     socket.on('reanudar', function (estado) {
         usuario = socket.usuario;
-        clientes[usuario].socket.estado = '';
+        clientes[usuario].estado = null;
         clientes[usuario].status = 1;
         clientes[usuario].tiempo = -1;
         con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
