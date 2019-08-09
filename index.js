@@ -70,6 +70,7 @@ io.on('connection', function (socket) {
         clientes[usuario].idcampana = idcampana;
         clientes[usuario].nombreCampana = nomcampana;
         clientes[usuario].tiempo = -1;
+        clientes[usuario].estado = '';
 
     });
 
@@ -87,7 +88,7 @@ io.on('connection', function (socket) {
 
     socket.on('reanudar', function (estado) {
         usuario = socket.usuario;
-        clientes[usuario].estado = null;
+        clientes[usuario].estado = '';
         clientes[usuario].status = 1;
         clientes[usuario].tiempo = -1;
         con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
