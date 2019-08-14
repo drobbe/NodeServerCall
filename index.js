@@ -183,10 +183,10 @@ ami.on('eventNewchannel', function(data){
     }
 });
 
-ami.on('eventAny', function(data){
-   // Capturamos evento de asterisk
-   console.log(data.Event, data);
-});
+// ami.on('eventAny', function(data){
+//    // Capturamos evento de asterisk
+//    console.log(data.Event, data);
+// });
 
 https.listen(3000, function () {
     console.log('listening on *:3000');
