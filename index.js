@@ -170,7 +170,7 @@ ami.on('eventHangup', function(data){
 ami.on('eventNewchannel', function(data){
     if(data.Context == 'from-internal'){
         usuario = data.Channel.split("-")[0].split("/")[1];
-        console.log(usuario+" ha recibido llamado");
+        console.log(usuario+" ha recibido llamado",data);
         clientes[usuario].status = 2;
         clientes[usuario].tiempo = -1;
 
@@ -243,7 +243,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-        console.log(key, clientes[key]);
+        //console.log(key, clientes[key]);
 
     });
 }
