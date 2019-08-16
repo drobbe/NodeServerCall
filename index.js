@@ -137,7 +137,7 @@ io.on('connection', function (socket) {
 ami.on('eventBridgeEnter', function(data){
     if(data.Context == 'from-internal'){
         usuario = data.Channel.split("-")[0].split("/")[1];
-        console.log(usuario+" ha contesto llamado");
+        console.log(usuario+" ha contesto llamado",data);
         clientes[usuario].status = 3;
         clientes[usuario].tiempo = -1;
         con.query('Update agente set status = 3 where usuario = ?',usuario, function (err, result) {
