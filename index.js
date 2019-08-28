@@ -122,9 +122,9 @@ io.on('connection', function (socket) {
                 // Redireccionar al evento donde cambia el estado
                 io.to(clientes[usuario].sockedId).emit("eventHangup", {Data: data});
             }
-        );
+            );
     });
- 
+
     socket.on('baño', function (msg) {
         con.query('Update agente set status = 5 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
@@ -171,22 +171,20 @@ ami.on('eventNewchannel', function(data){
     if(data.Context == 'from-internal'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha recibido llamado",data);
-        clientes[usuario].status = 2;
-        clientes[usuario].tiempo = -1;
-
-        con.query('Update agente set status = 2 where usuario = ?',usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
-        io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
+        try{
+            clientes[usuario].status = 2;
+            clientes[usuario].tiempo = -1;
+            io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
+            con.query('Update agente set status = 2 where usuario = ?',usuario, function (err, result) {
+                if (err) throw err;
+                console.log("Result: " + result);
+            });
+        }catch(e){
+            console.log("Perdio Conexion",e);
+        }
 
     }
 });
-
-// ami.on('eventAny', function(data){
-//    // Capturamos evento de asterisk
-//    console.log(data.Event, data);
-// });
 
 https.listen(3000, function () {
     console.log('listening on *:3000');
@@ -223,7 +221,7 @@ app.get('/asterisk/reload', function(req, res) {
             console.log('Reload', data.Message);
             res.status(200).json({ data});
         }
-    );
+        );
 });
 
 app.get('/usuario/:usuario/reanudar', function(req, res) {
