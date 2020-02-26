@@ -231,6 +231,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 
     clientes[usuario].status = 1;
     clientes[usuario].tiempo = -1;
+    clientes[usuario].estado = '';
     con.query('Update agente set status = 1 where usuario = ?',usuario, function (err, result) {
         if (err) throw err;
         console.log("Result: " + result);
