@@ -154,6 +154,7 @@ ami.on('eventHangup', function(data){
         console.log(usuario+" termino llamado");
         clientes[usuario].status = 4;
         clientes[usuario].tiempo = -1;
+        clientes[usuario].estado = "Tipificando";
         // Posible solucion agregar parametro, actualizar solo cuando sea status 3 (llamada) 
         // and status = ?
         // [usuario,3]
