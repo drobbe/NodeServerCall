@@ -91,6 +91,7 @@ io.on('connection', function (socket) {
         clientes[usuario].estado = '';
         clientes[usuario].status = 1;
         clientes[usuario].tiempo = -1;
+        clientes[usuario].estado = "";
         con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
