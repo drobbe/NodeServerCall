@@ -207,6 +207,10 @@ ami.on('eventHangup', function(data){
     }
 });
 
+ami.on('eventAny', function(data){
+    console.log(data.Event, data);
+});
+
 ami.on('eventNewchannel', function(data){
     if(data.Context == 'from-internal'){
         usuario = data.Channel.split("-")[0].split("/")[1];
