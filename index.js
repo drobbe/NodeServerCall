@@ -31,7 +31,7 @@ var clientes = new Object();
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-    host: "localhost",
+    host: config.sigma.serverDB,
     user: config.sigma.userDB,
     password: config.sigma.passDB,
     database:config.sigma.DB
@@ -49,13 +49,6 @@ io.on('connection', function (socket) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-
-        //insertar a la tabla historica
-        con.query('INSERT INTO  core.agente_his (agente, status) VALUES (?,0)',socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
-
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
         delete clientes[socket.usuario];
 
@@ -70,13 +63,6 @@ io.on('connection', function (socket) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-
-        //insertar a la tabla historica
-        con.query('INSERT INTO  core.agente_his (agente, status) VALUES (?,1)',socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
-
         console.log(socket.usuario + ' se ha conectado.' + socket.nombreCampana);
         clientes[usuario] = {"sockedId": socket.id};
         clientes[usuario].status = 1;
@@ -96,14 +82,9 @@ io.on('connection', function (socket) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-        //insertar a la tabla historica
-        con.query('INSERT INTO  core.agente_his (agente, status) VALUES (?,4)',socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
         console.log(socket.usuario + ' se ha pausado por ' + socket.estado);
 
-    });    
+    });
 
     socket.on('reanudar', function (estado) {
         usuario = socket.usuario;
@@ -111,11 +92,6 @@ io.on('connection', function (socket) {
         clientes[usuario].status = 1;
         clientes[usuario].tiempo = -1;
         con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
-        //insertar a la tabla historica
-        con.query('INSERT INTO  core.agente_his (agente, status) VALUES (?,1)',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -138,11 +114,11 @@ io.on('connection', function (socket) {
                 clientes[usuario].status = 4;
                 clientes[usuario].tiempo = -1;
 
-                con.query('Update agente set status = 4 where usuario = ?', usuario, function (err, result) {
+                con.query('Update agente set status = 4 where usuario = ?', usuario, function (err, result)                                                             {
                     if (err) throw err;
                     console.log("Result: " + result);
                 }); */
-                
+
                 // Redireccionar al evento donde cambia el estado
                 io.to(clientes[usuario].sockedId).emit("eventHangup", {Data: data});
             }
@@ -151,11 +127,6 @@ io.on('connection', function (socket) {
 
     socket.on('baño', function (msg) {
         con.query('Update agente set status = 5 where usuario = ?',socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
-        //insertar a la tabla historica
-        con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,5)',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -173,11 +144,6 @@ ami.on('eventBridgeEnter', function(data){
             if (err) throw err;
             console.log("Result: " + result);
         });
-        //insertar a la tabla historica
-        con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,3)',usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
         io.to(clientes[usuario].sockedId).emit("llamadaContestada", { Data: data })
     }
 });
@@ -189,26 +155,17 @@ ami.on('eventHangup', function(data){
         clientes[usuario].status = 4;
         clientes[usuario].tiempo = -1;
         clientes[usuario].estado = "Tipificando";
-        // Posible solucion agregar parametro, actualizar solo cuando sea status 3 (llamada) 
+        // Posible solucion agregar parametro, actualizar solo cuando sea status 3 (llamada)
         // and status = ?
         // [usuario,3]
         con.query('Update agente set status = 4 where usuario = ? ', usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-         //insertar a la tabla historica
-         con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,4)',usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
         io.to(clientes[usuario].sockedId).emit("llamadaTerminada", { Data: data });
-        
+
 
     }
-});
-
-ami.on('eventAny', function(data){
-    console.log(data.Event, data);
 });
 
 ami.on('eventNewchannel', function(data){
@@ -220,11 +177,6 @@ ami.on('eventNewchannel', function(data){
             clientes[usuario].tiempo = -1;
             io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
             con.query('Update agente set status = 2 where usuario = ?',usuario, function (err, result) {
-                if (err) throw err;
-                console.log("Result: " + result);
-            });
-             //insertar a la tabla historica
-            con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,2)',usuario, function (err, result) {
                 if (err) throw err;
                 console.log("Result: " + result);
             });
@@ -281,11 +233,6 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
     clientes[usuario].tiempo = -1;
     clientes[usuario].estado = '';
     con.query('Update agente set status = 1 where usuario = ?',usuario, function (err, result) {
-        if (err) throw err;
-        console.log("Result: " + result);
-    });
-    //insertar a la tabla historica
-    con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,1)',usuario, function (err, result) {
         if (err) throw err;
         console.log("Result: " + result);
     });
