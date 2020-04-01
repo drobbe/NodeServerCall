@@ -104,7 +104,7 @@ io.on('connection', function (socket) {
         });
 
         //Actualizar el tiempo del registro anterior
-        con.query('CALL sp_insert_time_agent(?)',socket.usuario, function (err, result) {
+        con.query('CALL core_dev.sp_insert_time_agent(?)',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result sp: " + result);
         });
@@ -134,7 +134,7 @@ io.on('connection', function (socket) {
         });
 
         //Actualizar el tiempo del registro anterior
-        con.query('CALL sp_insert_time_agent(?)',socket.usuario, function (err, result) {
+        con.query('CALL core_dev.sp_insert_time_agent(?)',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result sp: " + result);
         });
@@ -185,7 +185,7 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
         //Actualizar el tiempo del registro anterior
-        con.query('CALL sp_insert_time_agent(?)',socket.usuario, function (err, result) {
+        con.query('CALL core_dev.sp_insert_time_agent(?)',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result sp: " + result);
         });
