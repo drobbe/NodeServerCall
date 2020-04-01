@@ -31,7 +31,7 @@ var clientes = new Object();
 var mysql = require('mysql');
 
 var con = mysql.createConnection({
-    host: "localhost",
+    host: config.sigma.serverDB,
     user: config.sigma.userDB,
     password: config.sigma.passDB,
     database:config.sigma.DB
@@ -121,7 +121,7 @@ io.on('connection', function (socket) {
 
         console.log(socket.usuario + ' se ha pausado por ' + socket.estado);
 
-    });    
+    });
 
     socket.on('reanudar', function (estado) {
         usuario = socket.usuario;
@@ -168,11 +168,11 @@ io.on('connection', function (socket) {
                 clientes[usuario].status = 4;
                 clientes[usuario].tiempo = -1;
 
-                con.query('Update agente set status = 4 where usuario = ?', usuario, function (err, result) {
+                con.query('Update agente set status = 4 where usuario = ?', usuario, function (err, result)                                                             {
                     if (err) throw err;
                     console.log("Result: " + result);
                 }); */
-                
+
                 // Redireccionar al evento donde cambia el estado
                 io.to(clientes[usuario].sockedId).emit("eventHangup", {Data: data});
             }
@@ -205,7 +205,7 @@ io.on('connection', function (socket) {
 });
 
 ami.on('eventBridgeEnter', function(data){
-    if(data.Context == 'from-internal'){
+    if(data.Context == 'from-internal' || data.Context == 'preview'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha contesto llamado",data);
         clientes[usuario].status = 3;
@@ -214,42 +214,32 @@ ami.on('eventBridgeEnter', function(data){
             if (err) throw err;
             console.log("Result: " + result);
         });
-        //insertar a la tabla historica
-        con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,3)',usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
         io.to(clientes[usuario].sockedId).emit("llamadaContestada", { Data: data })
     }
 });
 
 ami.on('eventHangup', function(data){
-    if(data.Context == 'from-internal'){
+    if(data.Context == 'from-internal' || data.Context == 'preview'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" termino llamado");
         clientes[usuario].status = 4;
         clientes[usuario].tiempo = -1;
         clientes[usuario].estado = "Tipificando";
-        // Posible solucion agregar parametro, actualizar solo cuando sea status 3 (llamada) 
+        // Posible solucion agregar parametro, actualizar solo cuando sea status 3 (llamada)
         // and status = ?
         // [usuario,3]
         con.query('Update agente set status = 4 where usuario = ? ', usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
-         //insertar a la tabla historica
-         con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,4)',usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
         io.to(clientes[usuario].sockedId).emit("llamadaTerminada", { Data: data });
-        
+
 
     }
 });
 
 ami.on('eventNewchannel', function(data){
-    if(data.Context == 'from-internal'){
+    if(data.Context == 'from-internal' || data.Context == 'preview'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha recibido llamado",data);
         try{
@@ -260,16 +250,15 @@ ami.on('eventNewchannel', function(data){
                 if (err) throw err;
                 console.log("Result: " + result);
             });
-             //insertar a la tabla historica
-            con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,2)',usuario, function (err, result) {
-                if (err) throw err;
-                console.log("Result: " + result);
-            });
         }catch(e){
             console.log("Perdio Conexion",e);
         }
 
     }
+});
+
+ami.on('eventAny', function(data){
+    console.log(data.Event, data);
 });
 
 https.listen(3000, function () {
@@ -321,19 +310,16 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         if (err) throw err;
         console.log("Result: " + result);
     });
-    //insertar a la tabla historica
-    con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,1)',usuario, function (err, result) {
-        if (err) throw err;
-        console.log("Result: " + result);
-    });
     res.send(clientes[usuario]);
 
 })
 
+
+
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-        console.log(key, clientes[key]);
+       //console.log(key, clientes[key]);
 
     });
 }
