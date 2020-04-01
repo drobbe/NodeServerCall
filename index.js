@@ -187,9 +187,9 @@ ami.on('eventNewchannel', function(data){
     }
 });
 
-/*ami.on('eventAny', function(data){
+ami.on('eventAny', function(data){
     console.log(data.Event, data);
-});*/
+});
 
 https.listen(3000, function () {
     console.log('listening on *:3000');
@@ -249,7 +249,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-       console.log(key, clientes[key]);
+       //console.log(key, clientes[key]);
 
     });
 }
