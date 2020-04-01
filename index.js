@@ -50,10 +50,17 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
+        //Actualizar el tiempo del registro anterior
+        con.query('CALL core_dev.sp_insert_time_agent(?)',socket.usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result sp: " + result);
+        });
+
         dataInsert = [
             [socket.usuario,'0']
         ];
         //insertar a la tabla historica
+        //Insertar estado desconectado y ya no tendrá hora fin
         con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -128,6 +135,7 @@ io.on('connection', function (socket) {
         clientes[usuario].estado = '';
         clientes[usuario].status = 1;
         clientes[usuario].tiempo = -1;
+
         con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -215,6 +223,21 @@ ami.on('eventBridgeEnter', function(data){
             console.log("Result: " + result);
         });
         io.to(clientes[usuario].sockedId).emit("llamadaContestada", { Data: data })
+
+        //Actualizar el tiempo del registro anterior
+        con.query('CALL core_dev.sp_insert_time_agent(?)',usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result sp: " + result);
+        });
+        //insertar a la tabla historica
+        dataInsert = [
+            [usuario,'3']
+        ];
+        //insertar a la tabla historica
+        con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+        });
     }
 });
 
@@ -234,7 +257,20 @@ ami.on('eventHangup', function(data){
         });
         io.to(clientes[usuario].sockedId).emit("llamadaTerminada", { Data: data });
 
-
+        //Actualizar el tiempo del registro anterior
+        con.query('CALL core_dev.sp_insert_time_agent(?)',usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result sp: " + result);
+        });
+        //insertar a la tabla historica
+        dataInsert = [
+            [usuario,'4']
+        ];
+        //insertar a la tabla historica
+        con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+        });
     }
 });
 
@@ -250,6 +286,22 @@ ami.on('eventNewchannel', function(data){
                 if (err) throw err;
                 console.log("Result: " + result);
             });
+
+            //Actualizar el tiempo del registro anterior
+            con.query('CALL core_dev.sp_insert_time_agent(?)',usuario, function (err, result) {
+                if (err) throw err;
+                console.log("Result sp: " + result);
+            });
+            //insertar a la tabla historica
+            dataInsert = [
+                [usuario,'2']
+            ];
+            //insertar a la tabla historica
+            con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
+                if (err) throw err;
+                console.log("Result: " + result);
+            });
+        
         }catch(e){
             console.log("Perdio Conexion",e);
         }
@@ -310,6 +362,22 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         if (err) throw err;
         console.log("Result: " + result);
     });
+
+    //Actualizar el tiempo del registro anterior
+    con.query('CALL core_dev.sp_insert_time_agent(?)',usuario, function (err, result) {
+        if (err) throw err;
+        console.log("Result sp: " + result);
+    });
+    //insertar a la tabla historica
+    dataInsert = [
+        [usuario,'1']
+    ];
+    //insertar a la tabla historica
+    con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
+        if (err) throw err;
+        console.log("Result: " + result);
+    });
+
     res.send(clientes[usuario]);
 
 })
