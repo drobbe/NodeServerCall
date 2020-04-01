@@ -50,8 +50,11 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
+        dataInsert = [
+            [socket.usuario,'0']
+        ];
         //insertar a la tabla historica
-        con.query('INSERT INTO  core.agente_his (agente, status) VALUES (?,0)',socket.usuario, function (err, result) {
+        con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -71,8 +74,11 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
+        dataInsert = [
+            [socket.usuario,'1']
+        ];
         //insertar a la tabla historica
-        con.query('INSERT INTO  core.agente_his (agente, status) VALUES (?,1)',socket.usuario, function (err, result) {
+        con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -96,11 +102,23 @@ io.on('connection', function (socket) {
             if (err) throw err;
             console.log("Result: " + result);
         });
+
+        //Actualizar el tiempo del registro anterior
+        con.query('CALL sp_insert_time_agent(?)',socket.usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result sp: " + result);
+        });
+
         //insertar a la tabla historica
-        con.query('INSERT INTO  core.agente_his (agente, status) VALUES (?,4)',socket.usuario, function (err, result) {
+        dataInsert = [
+            [socket.usuario,'4']
+        ];
+        //insertar a la tabla historica
+        con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
+
         console.log(socket.usuario + ' se ha pausado por ' + socket.estado);
 
     });    
@@ -114,11 +132,23 @@ io.on('connection', function (socket) {
             if (err) throw err;
             console.log("Result: " + result);
         });
+
+        //Actualizar el tiempo del registro anterior
+        con.query('CALL sp_insert_time_agent(?)',socket.usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result sp: " + result);
+        });
+
         //insertar a la tabla historica
-        con.query('INSERT INTO  core.agente_his (agente, status) VALUES (?,1)',socket.usuario, function (err, result) {
+        dataInsert = [
+            [socket.usuario,'1']
+        ];
+        //insertar a la tabla historica
+        con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
+        
         console.log(socket.usuario + ' se ha se reconectado luego de ' + socket.estado);
     });
 
@@ -154,11 +184,22 @@ io.on('connection', function (socket) {
             if (err) throw err;
             console.log("Result: " + result);
         });
+        //Actualizar el tiempo del registro anterior
+        con.query('CALL sp_insert_time_agent(?)',socket.usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result sp: " + result);
+        });
+
         //insertar a la tabla historica
-        con.query('INSERT INTO core.agente_his (agente, status) VALUES (?,5)',socket.usuario, function (err, result) {
+        dataInsert = [
+            [socket.usuario,'5']
+        ];
+        //insertar a la tabla historica
+        con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
+        
         console.log(socket.usuario + ' se ha puesto en pausa');
     });
 });
