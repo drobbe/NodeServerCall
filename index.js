@@ -2,6 +2,7 @@ var app = require('express')();
 
 var fs = require('fs');
 var ini = require('ini');
+const shellExec = require('shell-exec')
 const config = ini.parse(fs.readFileSync('/var/www/html/class/db/conf.ini', 'utf-8'));
 
 console.log('Configuraciones: '+config.sigma.userDB);
@@ -84,11 +85,17 @@ io.on('connection', function (socket) {
         dataInsert = [
             [socket.usuario,'1']
         ];
+
+        //Tratar de insertar latencia
+        console.log('tratando de insertar latencia');
+        shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(console.log).catch(console.log)
+
         //insertar a la tabla historica
         con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
+
 
         console.log(socket.usuario + ' se ha conectado.' + socket.nombreCampana);
         clientes[usuario] = {"sockedId": socket.id};
