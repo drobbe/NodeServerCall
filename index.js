@@ -88,9 +88,11 @@ io.on('connection', function (socket) {
 
         //Tratar de insertar latencia
         console.log('tratando de insertar latencia');
-        var shell = shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(console.log).catch(console.log)
+        
+        var shell = shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(value){
+            console.log('debug shell' + value.stdout);
+        }).catch(console.log)
 
-        console.log('debug shell' + shell.stdout);
         
         //insertar a la tabla historica
         con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
