@@ -134,7 +134,7 @@ io.on('connection', function (socket) {
 
         //Actualizar el tiempo del registro anterior
         insertTimeAgent(socket.usuario);
-
+        socket.estado = estado;
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
 
@@ -166,7 +166,7 @@ io.on('connection', function (socket) {
 
         //Actualizar el tiempo del registro anterior
         insertTimeAgent(socket.usuario);
-
+        socket.estado = estado;
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
 
