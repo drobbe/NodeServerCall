@@ -85,23 +85,24 @@ io.on('connection', function (socket) {
         
 
         //Tratar de insertar latencia
-        var latencia = ''
+        // var latencia = ''
 
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(value){
             let status = value.stdout;
             arrayStatus = status.split(':')
-            latencia = arrayStatus[1].trim();
+            let latencia = arrayStatus[1].trim();
             console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
-        }).catch(console.log)
 
-        dataInsert = [
-            [socket.usuario,'1', latencia]
-        ];
-        //insertar a la tabla historica
-        con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`, latencia) VALUES ?', [dataInsert], function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
+            dataInsert = [
+                [socket.usuario,'1', latencia]
+            ];
+            //insertar a la tabla historica
+            con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`, latencia) VALUES ?', [dataInsert], function (err, result) {
+                if (err) throw err;
+                console.log("Result: " + result);
+            });
+        })
+        .catch(console.log)
 
 
         console.log(socket.usuario + ' se ha conectado.' + socket.nombreCampana);
