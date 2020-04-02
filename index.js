@@ -92,11 +92,10 @@ io.on('connection', function (socket) {
         });
 
 
-        shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(value){
+        shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
 
-            let status = value.stdout;
-            arrayStatus = status.split(':')
-            let latencia = arrayStatus[1].trim();
+            let status = shell.stdout.split(':');
+            let latencia = status[1].trim();
             console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
             dataInsert = [
