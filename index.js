@@ -43,9 +43,18 @@ con.connect(function(err) {
     console.log("Connected!");
 });
 
+function insertHistorico(dataInsert){
+    //insertar a la tabla historica
+    return con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`, latencia, campana, descripcion) VALUES ?', [dataInsert], function (err, result) {
+        if (err) throw err;
+        console.log("Result: " + result);
+    });
+}
+
 
 io.on('connection', function (socket) {
     socket.on('disconnect', function () {
+
         con.query('Update agente set status = 0 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -82,25 +91,19 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
-        
-
-        //Tratar de insertar latencia
-        // var latencia = ''
 
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(value){
+
             let status = value.stdout;
             arrayStatus = status.split(':')
             let latencia = arrayStatus[1].trim();
             console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
             dataInsert = [
-                [socket.usuario,'1', latencia]
+                [socket.usuario,'1', latencia,socket.idcampana,'Usuario se conecto']
             ];
             //insertar a la tabla historica
-            con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`, latencia) VALUES ?', [dataInsert], function (err, result) {
-                if (err) throw err;
-                console.log("Result: " + result);
-            });
+            insertHistorico(dataInsert)
         })
         .catch(console.log)
 
