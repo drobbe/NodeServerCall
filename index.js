@@ -57,6 +57,7 @@ function insertTimeAgent(agent){
         if (err) throw err;
         console.log("Result sp: " + result);
     });
+
 }
 
 function getIdByEstado(estado){
@@ -255,16 +256,21 @@ io.on('connection', function (socket) {
         //Actualizar el tiempo del registro anterior
         insertTimeAgent(socket.usuario);
 
-        //insertar a la tabla historica
-        dataInsert = [
-            [socket.usuario,'5']
-        ];
-        //insertar a la tabla historica
-        con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
-        
+        shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
+
+            let status = shell.stdout.split(':');
+            let latencia = status[1].trim();
+            console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
+
+            let id_campana = clientes[usuario].id_campana;
+            //insertar a la tabla historica
+            dataInsert = [
+                [socket.usuario,'5', latencia, id_campana, 'Pausa por baño', 3]
+            ];
+            insertHistorico(dataInsert)
+        })
+        .catch(console.log)
+
         console.log(socket.usuario + ' se ha puesto en pausa');
     });
 });
@@ -291,8 +297,9 @@ ami.on('eventBridgeEnter', function(data){
             let latencia = status[1].trim();
             console.log(`Latencia del user ${usuario} => ${latencia}`);
 
+            let id_campana = clientes[usuario].id_campana;
             dataInsert = [
-                [usuario,'3', latencia, null, 'Ha contestado llamada',1]
+                [usuario,'3', latencia, id_campana, 'Ha contestado llamada',1]
             ];
             insertHistorico(dataInsert)
         })
@@ -326,8 +333,9 @@ ami.on('eventHangup', function(data){
             let latencia = status[1].trim();
             console.log(`Latencia del user ${usuario} => ${latencia}`);
 
+            let id_campana = clientes[usuario].id_campana;
             dataInsert = [
-                [usuario,'4', latencia, null, 'Tipificando',2]
+                [usuario,'4', latencia, id_campana, 'Tipificando',2]
             ];
             insertHistorico(dataInsert)
         })
@@ -359,8 +367,9 @@ ami.on('eventNewchannel', function(data){
                 let latencia = status[1].trim();
                 console.log(`Latencia del user ${usuario} => ${latencia}`);
 
+                let id_campana = clientes[usuario].id_campana;
                 dataInsert = [
-                    [usuario,'2', latencia, null, 'Llamada conectada',null]
+                    [usuario,'2', latencia, id_campana, 'Llamada conectada',null]
                 ];
                 insertHistorico(dataInsert)
             })
@@ -437,8 +446,9 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         let latencia = status[1].trim();
         console.log(`Latencia del user ${usuario} => ${latencia}`);
 
+        let id_campana = clientes[usuario].id_campana;
         dataInsert = [
-            [usuario,'1', latencia, null, 'Reanudar',null]
+            [usuario,'1', latencia, id_campana, 'Reanudar',null]
         ];
         insertHistorico(dataInsert)
     })
@@ -458,3 +468,20 @@ function verficiarUsuarios() {
     });
 }
 setInterval(verficiarUsuarios, 1000);
+
+setInterval(function (){
+
+    Object.keys(clientes).forEach(function(key) {
+        let usuario = clientes[key].nombre;
+
+        shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
+
+            let status = shell.stdout.split(':');
+            let latencia = status[1].trim();
+            console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
+            clientes[key].latencia = latencia;
+        })
+        .catch(console.log)
+    });
+
+}, 3000);
