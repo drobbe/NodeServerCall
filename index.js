@@ -51,6 +51,14 @@ function insertHistorico(dataInsert){
     });
 }
 
+function insertTimeAgent(agent){
+    //Actualizar el tiempo del registro anterior
+    return con.query('CALL core_dev.sp_insert_time_agent(?)',agent, function (err, result) {
+        if (err) throw err;
+        console.log("Result sp: " + result);
+    });
+}
+
 
 io.on('connection', function (socket) {
     socket.on('disconnect', function () {
@@ -61,14 +69,12 @@ io.on('connection', function (socket) {
         });
 
         //Actualizar el tiempo del registro anterior
-        con.query('CALL core_dev.sp_insert_time_agent(?)',socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result sp: " + result);
-        });
+        insertTimeAgent(socket.usuario);
 
         dataInsert = [
             [socket.usuario,'0']
         ];
+        
         //insertar a la tabla historica
         //Insertar estado desconectado y ya no tendrá hora fin
         con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`) VALUES ?', [dataInsert], function (err, result) {
@@ -91,7 +97,7 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
-
+        //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
 
             let status = shell.stdout.split(':');
@@ -99,13 +105,11 @@ io.on('connection', function (socket) {
             console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
             dataInsert = [
-                [socket.usuario,'1', latencia,socket.idcampana,'Usuario se conecto']
+                [socket.usuario,'1', latencia, socket.idcampana, 'Usuario se conecto']
             ];
-            //insertar a la tabla historica
             insertHistorico(dataInsert)
         })
         .catch(console.log)
-
 
         console.log(socket.usuario + ' se ha conectado.' + socket.nombreCampana);
         clientes[usuario] = {"sockedId": socket.id};
@@ -128,10 +132,7 @@ io.on('connection', function (socket) {
         });
 
         //Actualizar el tiempo del registro anterior
-        con.query('CALL core_dev.sp_insert_time_agent(?)',socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result sp: " + result);
-        });
+        insertTimeAgent(socket.usuario);
 
         //insertar a la tabla historica
         dataInsert = [
@@ -159,10 +160,7 @@ io.on('connection', function (socket) {
         });
 
         //Actualizar el tiempo del registro anterior
-        con.query('CALL core_dev.sp_insert_time_agent(?)',socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result sp: " + result);
-        });
+        insertTimeAgent(socket.usuario);
 
         //insertar a la tabla historica
         dataInsert = [
@@ -209,11 +207,9 @@ io.on('connection', function (socket) {
             if (err) throw err;
             console.log("Result: " + result);
         });
+
         //Actualizar el tiempo del registro anterior
-        con.query('CALL core_dev.sp_insert_time_agent(?)',socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result sp: " + result);
-        });
+        insertTimeAgent(socket.usuario);
 
         //insertar a la tabla historica
         dataInsert = [
@@ -242,10 +238,8 @@ ami.on('eventBridgeEnter', function(data){
         io.to(clientes[usuario].sockedId).emit("llamadaContestada", { Data: data })
 
         //Actualizar el tiempo del registro anterior
-        con.query('CALL core_dev.sp_insert_time_agent(?)',usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result sp: " + result);
-        });
+        insertTimeAgent(usuario);
+
         //insertar a la tabla historica
         dataInsert = [
             [usuario,'3']
@@ -275,10 +269,8 @@ ami.on('eventHangup', function(data){
         io.to(clientes[usuario].sockedId).emit("llamadaTerminada", { Data: data });
 
         //Actualizar el tiempo del registro anterior
-        con.query('CALL core_dev.sp_insert_time_agent(?)',usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result sp: " + result);
-        });
+        insertTimeAgent(usuario);
+
         //insertar a la tabla historica
         dataInsert = [
             [usuario,'4']
@@ -305,10 +297,8 @@ ami.on('eventNewchannel', function(data){
             });
 
             //Actualizar el tiempo del registro anterior
-            con.query('CALL core_dev.sp_insert_time_agent(?)',usuario, function (err, result) {
-                if (err) throw err;
-                console.log("Result sp: " + result);
-            });
+            insertTimeAgent(usuario);
+
             //insertar a la tabla historica
             dataInsert = [
                 [usuario,'2']
@@ -381,10 +371,8 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
     });
 
     //Actualizar el tiempo del registro anterior
-    con.query('CALL core_dev.sp_insert_time_agent(?)',usuario, function (err, result) {
-        if (err) throw err;
-        console.log("Result sp: " + result);
-    });
+    insertTimeAgent(usuario);
+
     //insertar a la tabla historica
     dataInsert = [
         [usuario,'1']
