@@ -85,7 +85,7 @@ io.on('connection', function (socket) {
         
 
         //Tratar de insertar latencia
-        let latencia = ''
+        var latencia = ''
 
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(value){
             let status = value.stdout;
