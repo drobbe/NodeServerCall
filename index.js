@@ -45,7 +45,7 @@ con.connect(function(err) {
 
 function insertHistorico(dataInsert){
     //insertar a la tabla historica
-    return con.query('INSERT INTO `core_dev`.`agente_his`(`agente`, `status`, latencia, campana, descripcion,id_status) VALUES ?', [dataInsert], function (err, result) {
+    return con.query('INSERT INTO `core`.`agente_his`(`agente`, `status`, latencia, campana, descripcion,id_status) VALUES ?', [dataInsert], function (err, result) {
         if (err) throw err;
         console.log("Result: " + result);
     });
@@ -53,7 +53,7 @@ function insertHistorico(dataInsert){
 
 function insertTimeAgent(agent){
     //Actualizar el tiempo del registro anterior
-    return con.query('CALL core_dev.sp_insert_time_agent(?)',agent, function (err, result) {
+    return con.query('CALL core.sp_insert_time_agent(?)',agent, function (err, result) {
         if (err) throw err;
         console.log("Result sp: " + result);
     });
