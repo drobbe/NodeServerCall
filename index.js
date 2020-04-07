@@ -157,7 +157,9 @@ io.on('connection', function (socket) {
         usuario = socket.usuario;
 
         // idcampana = clientes[usuario].idcampana;
-
+        if (clientes[usuario] === undefined) {
+            return;
+        }
         clientes[usuario].estado = estado;
         clientes[usuario].status = 4;
         con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
@@ -190,6 +192,9 @@ io.on('connection', function (socket) {
 
     socket.on('reanudar', function (estado) {
         usuario = socket.usuario;
+        if (clientes[usuario] === undefined) {
+            return;
+        }
         clientes[usuario].estado = '';
         clientes[usuario].status = 1;
         clientes[usuario].tiempo = -1;
@@ -279,6 +284,9 @@ ami.on('eventBridgeEnter', function(data){
     if(data.Context == 'from-internal' || data.Context == 'preview'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha contesto llamado",data);
+        if (clientes[usuario] === undefined) {
+            return;
+        }
         clientes[usuario].status = 3;
         clientes[usuario].tiempo = -1;
         con.query('Update agente set status = 3 where usuario = ?',usuario, function (err, result) {
@@ -311,6 +319,9 @@ ami.on('eventHangup', function(data){
     if(data.Context == 'from-internal' || data.Context == 'preview'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" termino llamado");
+        if (clientes[usuario] === undefined) {
+            return;
+        }
         clientes[usuario].status = 4;
         clientes[usuario].tiempo = -1;
         clientes[usuario].estado = "Tipificando";
@@ -348,6 +359,9 @@ ami.on('eventNewchannel', function(data){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha recibido llamado",data);
         try{
+            if (clientes[usuario] === undefined) {
+            return;
+            }
             clientes[usuario].status = 2;
             clientes[usuario].tiempo = -1;
             io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
@@ -427,7 +441,9 @@ app.get('/asterisk/reload', function(req, res) {
 app.get('/usuario/:usuario/reanudar', function(req, res) {
 
     usuario = req.params.usuario;
-
+    if (clientes[usuario] === undefined) {
+        return;
+    }
     clientes[usuario].status = 1;
     clientes[usuario].tiempo = -1;
     clientes[usuario].estado = '';
