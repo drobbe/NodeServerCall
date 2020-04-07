@@ -267,7 +267,7 @@ io.on('connection', function (socket) {
             let latencia = status[1].trim();
             console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
-            let id_campana = clientes[usuario].id_campana;
+            let id_campana = clientes[usuario].idcampana;
             //insertar a la tabla historica
             dataInsert = [
                 [socket.usuario,'5', latencia, id_campana, 'Pausa por baño', 3]
@@ -305,7 +305,7 @@ ami.on('eventBridgeEnter', function(data){
             let latencia = status[1].trim();
             console.log(`Latencia del user ${usuario} => ${latencia}`);
 
-            let id_campana = clientes[usuario].id_campana;
+            let id_campana = clientes[usuario].idcampana;
             dataInsert = [
                 [usuario,'3', latencia, id_campana, 'Ha contestado llamada',1]
             ];
@@ -344,7 +344,7 @@ ami.on('eventHangup', function(data){
             let latencia = status[1].trim();
             console.log(`Latencia del user ${usuario} => ${latencia}`);
 
-            let id_campana = clientes[usuario].id_campana;
+            let id_campana = clientes[usuario].idcampana;
             dataInsert = [
                 [usuario,'4', latencia, id_campana, 'Tipificando',2]
             ];
@@ -381,7 +381,7 @@ ami.on('eventNewchannel', function(data){
                 let latencia = status[1].trim();
                 console.log(`Latencia del user ${usuario} => ${latencia}`);
 
-                let id_campana = clientes[usuario].id_campana;
+                let id_campana = clientes[usuario].idcampana;
                 dataInsert = [
                     [usuario,'2', latencia, id_campana, 'Llamada conectada',null]
                 ];
@@ -462,7 +462,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         let latencia = status[1].trim();
         console.log(`Latencia del user ${usuario} => ${latencia}`);
 
-        let id_campana = clientes[usuario].id_campana;
+        let id_campana = clientes[usuario].idcampana;
         dataInsert = [
             [usuario,'1', latencia, id_campana, 'Reanudar',null]
         ];
