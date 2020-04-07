@@ -421,6 +421,11 @@ app.get('/usuarios', function(req, res) {
     res.status(200).json({ clientes});
 });
 
+app.get('/deletall', function(req, res) {
+    clientes = [];
+    res.status(200).json({ clientes});
+});
+
 app.get('/asterisk/reload', function(req, res) {
     ami.action(
         'Reload',
