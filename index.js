@@ -113,6 +113,8 @@ io.on('connection', function (socket) {
         socket = clientes[socket.usuario];
         usuario = socket.usuario;
 
+        console.log("usuario",usuario);
+
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
         delete clientes[socket.usuario];
 
