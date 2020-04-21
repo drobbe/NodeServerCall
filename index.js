@@ -119,6 +119,7 @@ io.on('connection', function (socket) {
         setTimeout(
             function(){ 
                 console.log("---------------Cayo------------------");
+                console.log(clientes,usuario);
                 if(clientes[usuario] != undefined){
                     clientes[usuario] = socket;
                     console.log("---------------Reemplazo------------------");
