@@ -90,6 +90,10 @@ function getIdByEstado(estado){
 io.on('connection', function (socket) {
     socket.on('disconnect', function () {
 
+        usuario = socket.usuario;
+
+        console.log("usuario",usuario);
+
         con.query('Update agente set status = 0 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -109,11 +113,6 @@ io.on('connection', function (socket) {
             insertHistorico(dataInsert)
         })
         .catch(console.log)
-
-        socket = clientes[socket.usuario];
-        usuario = socket.usuario;
-
-        console.log("usuario",usuario);
 
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
         delete clientes[socket.usuario];
