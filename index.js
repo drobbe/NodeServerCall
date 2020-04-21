@@ -110,9 +110,26 @@ io.on('connection', function (socket) {
         })
         .catch(console.log)
 
+        socket = clientes[socket.usuario];
+        usuario = socket.usuario;
 
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
         delete clientes[socket.usuario];
+
+        setTimeout(
+            function(){ 
+                console.log("---------------Cayo------------------");
+                if(clientes[usuario] != undefined){
+                    clientes[usuario] = socket;
+                    console.log("---------------Reemplazo------------------");
+                }else{
+                    console.log("---------------NO Reemplazo------------------");
+                }
+              
+            },
+            8000
+        );
+
 
     });
 
