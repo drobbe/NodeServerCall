@@ -515,8 +515,9 @@ setInterval(function (){
         shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
 
             let status = shell.stdout.split(':');
-            let latencia = status[1].trim();
-            console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
+            //let latencia = status[1].trim();
+            //console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
+            latencia = 1;
             clientes[key].latencia = latencia;
         })
         .catch(console.log)
