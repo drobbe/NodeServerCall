@@ -123,8 +123,9 @@ io.on('connection', function (socket) {
                     //Insertar latencia y una vez obtenida insertar con el estado
                     shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`).then(function(shell){
 
-                        let status = shell.stdout.split(':');
-                        let latencia = status[1].trim();
+                        // let status = shell.stdout.split(':');
+                        // let latencia = status[1].trim();
+                        let latencia = shell.stdout;
                         console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
                         dataInsert = [
@@ -159,8 +160,7 @@ io.on('connection', function (socket) {
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`).then(function(shell){
 
-            let status = shell.stdout.split(':');
-            let latencia = status[1].trim();
+            let latencia = shell.stdout;
             console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
             dataInsert = [
@@ -203,8 +203,7 @@ io.on('connection', function (socket) {
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`).then(function(shell){
 
-            let status = shell.stdout.split(':');
-            let latencia = status[1].trim();
+            let latencia = shell.stdout;
             console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
             let id_estado  = getIdByEstado(socket.estado);
@@ -239,8 +238,7 @@ io.on('connection', function (socket) {
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`).then(function(shell){
 
-            let status = shell.stdout.split(':');
-            let latencia = status[1].trim();
+            let latencia = shell.stdout;
             console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
             let id_estado  = getIdByEstado(socket.estado);
@@ -292,8 +290,7 @@ io.on('connection', function (socket) {
 
         shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`).then(function(shell){
 
-            let status = shell.stdout.split(':');
-            let latencia = status[1].trim();
+            let latencia = shell.stdout;
             console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
             let id_campana = clientes[usuario].idcampana;
@@ -330,8 +327,7 @@ ami.on('eventBridgeEnter', function(data){
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
 
-            let status = shell.stdout.split(':');
-            let latencia = status[1].trim();
+            let latencia = shell.stdout;
             console.log(`Latencia del user ${usuario} => ${latencia}`);
 
             let id_campana = clientes[usuario].idcampana;
@@ -369,8 +365,7 @@ ami.on('eventHangup', function(data){
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
 
-            let status = shell.stdout.split(':');
-            let latencia = status[1].trim();
+            let latencia = shell.stdout;
             console.log(`Latencia del user ${usuario} => ${latencia}`);
 
             let id_campana = clientes[usuario].idcampana;
@@ -406,8 +401,7 @@ ami.on('eventNewchannel', function(data){
             //Insertar latencia y una vez obtenida insertar con el estado
             shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
 
-                let status = shell.stdout.split(':');
-                let latencia = status[1].trim();
+                let latencia = shell.stdout;
                 console.log(`Latencia del user ${usuario} => ${latencia}`);
 
                 let id_campana = clientes[usuario].idcampana;
@@ -492,8 +486,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
     //Insertar latencia y una vez obtenida insertar con el estado
     shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
 
-        let status = shell.stdout.split(':');
-        let latencia = status[1].trim();
+        let latencia = shell.stdout;
         console.log(`Latencia del user ${usuario} => ${latencia}`);
 
         let id_campana = clientes[usuario].idcampana;
@@ -525,8 +518,7 @@ setInterval(function () {
 
         shellExec(`asterisk -rx 'pjsip show aor ${usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`)
             .then(function (shell) {
-                //let status = shell.stdout.split(':');
-                //let latencia = status[1].trim();
+                
                 latencia = shell.stdout;
                 clientes[key].latencia = latencia;
                 console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
