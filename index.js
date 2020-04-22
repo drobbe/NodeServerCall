@@ -97,6 +97,34 @@ io.on('connection', function (socket) {
 
         console.log("Update agente set status = 0 where usuario = ? "+usuario);
 
+        if(usuario == undefined){
+            return;
+        }
+
+
+        con.query('Update agente set status = 0 where usuario = ?',usuario, function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+        });
+
+        insertTimeAgent(socket.usuario);
+        //Insertar latencia y una vez obtenida insertar con el estado
+        shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`).then(function(shell){
+
+            // let status = shell.stdout.split(':');
+            // let latencia = status[1].trim();
+            let latencia = shell.stdout;
+            console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
+
+            dataInsert = [
+                [socket.usuario,'0', latencia, socket.idcampana, 'Agente se desconecto',9]
+            ];
+            insertHistorico(dataInsert)
+        })
+        .catch(console.log)
+
+        console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
+        delete clientes[socket.usuario];
 
         setTimeout(
             function(){
@@ -109,34 +137,7 @@ io.on('connection', function (socket) {
                     console.log("---------------NO Reemplazo------------------");
           
 
-                    if(usuario == undefined){
-                        return;
-                    }
 
-
-                    con.query('Update agente set status = 0 where usuario = ?',usuario, function (err, result) {
-                        if (err) throw err;
-                        console.log("Result: " + result);
-                    });
-
-                    insertTimeAgent(socket.usuario);
-                    //Insertar latencia y una vez obtenida insertar con el estado
-                    shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`).then(function(shell){
-
-                        // let status = shell.stdout.split(':');
-                        // let latencia = status[1].trim();
-                        let latencia = shell.stdout;
-                        console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
-
-                        dataInsert = [
-                            [socket.usuario,'0', latencia, socket.idcampana, 'Agente se desconecto',9]
-                        ];
-                        insertHistorico(dataInsert)
-                    })
-                    .catch(console.log)
-
-                    console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
-                    delete clientes[socket.usuario];
                 }
 
             },
