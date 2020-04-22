@@ -143,7 +143,7 @@ io.on('connection', function (socket) {
                 }
 
             },
-            30000
+            10000
         );
 
 
@@ -529,7 +529,7 @@ setInterval(function () {
                 
                 latencia = shell.stdout;
                 clientes[key].latencia = latencia;
-                console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
+                //console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
             })
             .catch(console.log);
     });
