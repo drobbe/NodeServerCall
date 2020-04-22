@@ -344,6 +344,7 @@ ami.on('eventBridgeEnter', function(data){
 });
 
 ami.on('eventHangup', function(data){
+    console.log(data);
     if(data.Context == 'from-internal' || data.Context == 'preview'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" termino llamado");
