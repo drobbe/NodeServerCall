@@ -12,13 +12,7 @@ var options = {
     cert: fs.readFileSync(config.sigma.certNode)
 };
 var https = require("https").createServer(options, app);
-const socketIO = require("socket.io");
-
-var options = {
-    allowUpgrades: false
-};
-
-const io = socketIO(https, options);
+var io = require("socket.io")(https);
 
 var aio = require("asterisk.io");
 var ami = null;
