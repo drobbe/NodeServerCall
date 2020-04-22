@@ -484,7 +484,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-       //console.log(key, clientes[key]);
+        console.log(key, clientes[key]);
 
     });
 }
@@ -497,10 +497,10 @@ setInterval(function (){
 
         shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
 
-            let status = shell.stdout.split(':');
-            let latencia = status[1].trim();
-            console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
-            clientes[key].latencia = latencia;
+            //let status = shell.stdout.split(':');
+            //let latencia = status[1].trim();
+            ////console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
+            //clientes[key].latencia = latencia;
         })
         .catch(console.log)
     });
