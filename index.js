@@ -90,6 +90,7 @@ function getIdByEstado(estado) {
 
 io.on("connection", function (socket) {
     socket.on("disconnect", function () {
+        console.log("DISC", socket);
         con.query("Update agente set status = 0 where usuario = ?", socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -119,6 +120,8 @@ io.on("connection", function (socket) {
     });
 
     socket.on("join", function (usuario, idcampana, nomcampana) {
+        console.log("DESC", desconectados);
+        console.log("DESC", usuario, desconectados[usuario]);
         if (desconectados[usuario] !== undefined) {
             clientes[usuario] = desconectados[usuario];
             clientes[usuario] = { sockedId: socket.id };
