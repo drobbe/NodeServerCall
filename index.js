@@ -91,6 +91,8 @@ function getIdByEstado(estado) {
 io.on("connection", function (socket) {
     socket.on("disconnect", function () {
         console.log("DISC");
+        console.log(socket.usuario);
+        console.log(socket);
         con.query("Update agente set status = 0 where usuario = ?", socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
