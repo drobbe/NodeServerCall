@@ -116,13 +116,13 @@ io.on("connection", function (socket) {
 
         setTimeout(() => {
             delete desconectados[socket.usuario];
+            console.log("VOLO");
         }, 8000);
     });
 
     socket.on("join", function (usuario, idcampana, nomcampana) {
-        console.log("DESC", desconectados);
-        console.log("DESC", usuario, desconectados[usuario]);
         if (desconectados[usuario] !== undefined) {
+            console.log("RECONECTADOOOOOOOOOOOOOOO");
             clientes[usuario] = desconectados[usuario];
             clientes[usuario] = { sockedId: socket.id };
         } else {
