@@ -118,7 +118,7 @@ io.on("connection", function (socket) {
         setTimeout(() => {
             delete desconectados[socket.usuario];
             console.log("VOLO");
-        }, 15000);
+        }, 30000);
     });
 
     socket.on("join", function (usuario, idcampana, nomcampana) {
