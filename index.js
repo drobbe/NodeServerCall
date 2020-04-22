@@ -55,7 +55,7 @@ function insertTimeAgent(agent){
     //Actualizar el tiempo del registro anterior
     return con.query('CALL core.sp_insert_time_agent(?)',agent, function (err, result) {
         if (err) throw err;
-        console.log("Result sp: " + result);
+        //console.log("Result sp: " + result);
     });
 
 }
@@ -242,7 +242,7 @@ io.on('connection', function (socket) {
         shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`).then(function(shell){
 
             let latencia = shell.stdout;
-            console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
+            //console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
 
             let id_estado  = getIdByEstado(socket.estado);
             dataInsert = [
