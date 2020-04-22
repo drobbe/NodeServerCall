@@ -107,6 +107,8 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
+        console.log("Llego 5");
+
         insertTimeAgent(socket.usuario);
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`).then(function(shell){
