@@ -96,10 +96,10 @@ io.on('connection', function (socket) {
 
         console.log("usuario",usuario);
 
-        console.log("Update agente set status = 0 where usuario = ? "+socket.usuario);
+        console.log("Update agente set status = 0 where usuario = ? "+socket);
 
 
-        con.query('Update agente set status = 0 where usuario = ?',socket.usuario, function (err, result) {
+        con.query('Update agente set status = 0 where usuario = ?',socket, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
