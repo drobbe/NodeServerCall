@@ -89,7 +89,13 @@ function getIdByEstado(estado){
 
 io.on('connection', function (socket) {
     socket.on('disconnect', function () {
+        usuario = socket.usuario;
 
+        estado = clientes[socket.usuario];
+
+        console.log("usuario",usuario);
+
+        console.log("Update agente set status = 0 where usuario = ? "+usuario);
 
 
         setTimeout(
@@ -101,13 +107,7 @@ io.on('connection', function (socket) {
                     console.log("---------------Reemplazo------------------");
                 }else{
                     console.log("---------------NO Reemplazo------------------");
-                    usuario = socket.usuario;
-
-                    estado = clientes[socket.usuario];
-
-                    console.log("usuario",usuario);
-
-                    console.log("Update agente set status = 0 where usuario = ? "+usuario);
+          
 
                     if(usuario == undefined){
                         return;
