@@ -500,7 +500,7 @@ setInterval(function (){
             //let status = shell.stdout.split(':');
             //let latencia = status[1].trim();
             //console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
-            latencia = 1
+            latencia = 1;
             clientes[key].latencia = latencia;
         })
         .catch(console.log)
