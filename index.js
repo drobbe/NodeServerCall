@@ -90,16 +90,7 @@ function getIdByEstado(estado){
 io.on('connection', function (socket) {
     socket.on('disconnect', function () {
 
-        usuario = socket.usuario;
-
-        estado = clientes[socket.usuario];
-
-        console.log("usuario",usuario);
-
-        console.log("Update agente set status = 0 where usuario = ? "+socket);
-
-
-        con.query('Update agente set status = 0 where usuario = ?',socket, function (err, result) {
+        con.query('Update agente set status = 0 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
@@ -119,24 +110,9 @@ io.on('connection', function (socket) {
         })
         .catch(console.log)
 
+
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
         delete clientes[socket.usuario];
-
-        setTimeout(
-            function(){ 
-                console.log("---------------Cayo------------------");
-                console.log(clientes,usuario);
-                if(clientes[usuario] != undefined){
-                    clientes[usuario] = estado;
-                    console.log("---------------Reemplazo------------------");
-                }else{
-                    console.log("---------------NO Reemplazo------------------");
-                }
-              
-            },
-            8000
-        );
-
 
     });
 
@@ -521,10 +497,10 @@ setInterval(function (){
 
         shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
 
-            let status = shell.stdout.split(':');
+            //let status = shell.stdout.split(':');
             //let latencia = status[1].trim();
             //console.log(`Latencia del user 3s ${usuario} => ${latencia}`);
-            latencia = 1;
+            latencia = 1
             clientes[key].latencia = latencia;
         })
         .catch(console.log)
