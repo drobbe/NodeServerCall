@@ -118,7 +118,7 @@ io.on("connection", function (socket) {
         setTimeout(() => {
             delete desconectados[socket.usuario];
             console.log("VOLO");
-        }, 8000);
+        }, 15000);
     });
 
     socket.on("join", function (usuario, idcampana, nomcampana) {
@@ -138,7 +138,9 @@ io.on("connection", function (socket) {
 
             insertTimeAgent(socket.usuario);
             //Insertar latencia y una vez obtenida insertar con el estado
-            shellExec(`asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`)
+            shellExec(
+                `asterisk -rx 'pjsip show aor ${socket.usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`
+            )
                 .then(function (shell) {
                     // let status = shell.stdout.split(":");
                     // let latencia = status[1].trim();
