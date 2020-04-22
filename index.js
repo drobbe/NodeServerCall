@@ -517,6 +517,9 @@ setInterval(verficiarUsuarios, 1000);
 
 setInterval(function () {
     Object.keys(clientes).forEach(function (key) {
+        if(clientes[key].nombre == undefined){
+            return;
+        }
         let usuario = clientes[key].nombre;
 
         shellExec(`asterisk -rx 'pjsip show aor ${usuario}' | grep Avail | cut -d 'l' -f2 | tr -d '[[:space:]]'`)
