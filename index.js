@@ -92,6 +92,8 @@ io.on('connection', function (socket) {
 
         usuario = socket.usuario;
 
+        estado = clientes[socket.usuario];
+
         console.log("usuario",usuario);
 
         con.query('Update agente set status = 0 where usuario = ?',socket.usuario, function (err, result) {
@@ -122,7 +124,7 @@ io.on('connection', function (socket) {
                 console.log("---------------Cayo------------------");
                 console.log(clientes,usuario);
                 if(clientes[usuario] != undefined){
-                    clientes[usuario] = socket;
+                    clientes[usuario] = estado;
                     console.log("---------------Reemplazo------------------");
                 }else{
                     console.log("---------------NO Reemplazo------------------");
