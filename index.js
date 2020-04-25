@@ -349,7 +349,7 @@ ami.on('eventHangup', function(data){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" termino llamado");
         if (clientes[usuario] === undefined) {
-            console.log("llego mal");
+            console.log(usuario);
             return;
         }
         clientes[usuario].status = 4;
