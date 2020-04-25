@@ -348,6 +348,9 @@ ami.on('eventHangup', function(data){
     if(data.Context == 'from-internal' || data.Context == 'preview'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" termino llamado");
+        if (clientes[usuario] === undefined) {
+            return;
+        }
         clientes[usuario].status = 4;
         clientes[usuario].tiempo = -1;
         clientes[usuario].estado = "Tipificando";
