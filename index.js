@@ -203,6 +203,7 @@ io.on('connection', function (socket) {
     socket.on('cerrarSesion', function () {
         usuario = socket.usuario;
         clientes[usuario].cerroSesion = true;
+        console.log("cerroSesion",clientes.usuario);
     });
 
     socket.on('pausa', function (estado) {
