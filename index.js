@@ -133,7 +133,9 @@ io.on('connection', function (socket) {
                 console.log("---------------Cayo------------------");
                 console.log(clientes,usuario);
                 if(clientes[usuario] != undefined){
+                    oldsockedId = clientes[usuario].sockedId;
                     clientes[usuario] = estado;
+                    clientes[usuario].sockedId = oldsockedId;
                     console.log("---------------Reemplazo------------------");
                 }else{
                     console.log("---------------NO Reemplazo------------------");
