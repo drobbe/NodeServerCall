@@ -131,26 +131,30 @@ io.on('connection', function (socket) {
 
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
         delete clientes[socket.usuario];
-
-        setTimeout(
-            function(){
-                console.log("---------------Cayo------------------");
-                console.log(clientes,usuario);
-                if(clientes[usuario] != undefined){
-                    oldsockedId = clientes[usuario].sockedId;
-                    clientes[usuario] = estado;
-                    clientes[usuario].sockedId = oldsockedId;
-                    console.log("---------------Reemplazo------------------");
-                }else{
-                    console.log("---------------NO Reemplazo------------------");
-          
+        if(estado.cerroSesion == undefined){
+            setTimeout(
+                function(){
+                    console.log("---------------Cayo------------------");
+                    console.log(clientes,usuario);
 
 
-                }
+                    if(clientes[usuario] != undefined){
+                        oldsockedId = clientes[usuario].sockedId;
+                        clientes[usuario] = estado;
+                        clientes[usuario].sockedId = oldsockedId;
+                        console.log("---------------Reemplazo------------------");
+                    }else{
+                        console.log("---------------NO Reemplazo------------------");
+                    }
 
-            },
-            10000
-        );
+                },
+                10000
+            );
+
+        }
+        else{
+            console.log("---------------No es neseario reemplzar------------------");
+        }
 
 
     });
@@ -194,6 +198,11 @@ io.on('connection', function (socket) {
         clientes[usuario].tiempo = -1;
         clientes[usuario].estado = '';
 
+    });
+
+    socket.on('cerrarSesion', function () {
+        usuario = socket.usuario;
+        clientes[usuario].cerroSesion = true;
     });
 
     socket.on('pausa', function (estado) {
