@@ -350,7 +350,7 @@ io.on('connection', function (socket) {
 });
 
 ami.on('eventBridgeEnter', function(data){
-    console.log("eventBridgeEnter",data),
+    console.log("eventBridgeEnter",data);
     if(data.Context == 'from-internal' || data.Context == 'preview' || data.Context == 'conference_1'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha contesto llamado",data);
