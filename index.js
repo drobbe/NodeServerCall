@@ -47,7 +47,7 @@ function insertHistorico(dataInsert){
     //insertar a la tabla historica
     return con.query('INSERT INTO `core`.`agente_his`(`agente`, `status`, latencia, campana, descripcion,id_status) VALUES ?', [dataInsert], function (err, result) {
         if (err) throw err;
-        console.log("Result: " + result);
+        //console.log("Result: " + result);
     });
 }
 
@@ -107,7 +107,6 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
-        console.log("Llego 5");
 
         insertTimeAgent(socket.usuario);
         //Insertar latencia y una vez obtenida insertar con el estado
@@ -575,7 +574,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-        console.log(key, clientes[key]);
+        //console.log(key, clientes[key]);
 
     });
 }
