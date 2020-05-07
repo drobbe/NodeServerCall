@@ -350,6 +350,7 @@ io.on('connection', function (socket) {
 });
 
 ami.on('eventBridgeEnter', function(data){
+    console.log("eventBridgeEnter",data),
     if(data.Context == 'from-internal' || data.Context == 'preview' || data.contex == 'conference_1'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha contesto llamado",data);
@@ -482,7 +483,7 @@ ami.on('eventNewchannel', function(data){
 });
 
 ami.on('eventAny', function(data){
-    console.log(data.Event, data);
+    //console.log(data.Event, data);
 });
 
 https.listen(3000, function () {
