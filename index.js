@@ -47,7 +47,7 @@ function insertHistorico(dataInsert){
     //insertar a la tabla historica
     return con.query('INSERT INTO `core`.`agente_his`(`agente`, `status`, latencia, campana, descripcion,id_status) VALUES ?', [dataInsert], function (err, result) {
         if (err) throw err;
-        //console.log("Result: " + result);
+        console.log("Result: " + result);
     });
 }
 
@@ -107,6 +107,7 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
+        console.log("Llego 5");
 
         insertTimeAgent(socket.usuario);
         //Insertar latencia y una vez obtenida insertar con el estado
@@ -350,7 +351,6 @@ io.on('connection', function (socket) {
 });
 
 ami.on('eventBridgeEnter', function(data){
-    console.log("eventBridgeEnter",data);
     if(data.Context == 'from-internal' || data.Context == 'preview' || data.Context == 'conference_1'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha contesto llamado",data);
@@ -392,7 +392,7 @@ ami.on('eventBridgeEnter', function(data){
 
 ami.on('eventHangup', function(data){
     console.log(data);
-    if(data.Context == 'from-internal' || data.Context == 'preview' || data.contex == 'outcall-client'){
+    if(data.Context == 'from-internal' || data.Context == 'preview' || data.Context == 'conference_1'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" termino llamado");
         if (clientes[usuario] === undefined) {
@@ -483,7 +483,7 @@ ami.on('eventNewchannel', function(data){
 });
 
 ami.on('eventAny', function(data){
-    //console.log(data.Event, data);
+    console.log(data.Event, data);
 });
 
 https.listen(3000, function () {
@@ -575,7 +575,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-        //console.log(key, clientes[key]);
+        console.log(key, clientes[key]);
 
     });
 }
