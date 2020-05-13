@@ -351,9 +351,9 @@ io.on('connection', function (socket) {
 });
 
 ami.on('eventBridgeEnter', function(data){
+    console.log(data);
     if(data.Context == 'from-internal' || data.Context == 'preview' || data.Context == 'conference_1'|| data.Context== 'prueba'){
         usuario = data.Channel.split("-")[0].split("/")[1];
-        console.log(usuario+" ha contesto llamado",data);
         if (clientes[usuario] === undefined) {
             return;
         }
