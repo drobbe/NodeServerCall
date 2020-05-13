@@ -436,7 +436,7 @@ ami.on('eventHangup', function(data){
 });
 
 ami.on('eventNewchannel', function(data){
-    if(data.Context == 'from-internal' || data.Context == 'preview' || data.contex == 'outcall-client|| data.Context== 'prueba''){
+    if(data.Context == 'from-internal' || data.Context == 'preview' || data.contex == 'outcall-client' || data.Context== 'prueba'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" ha recibido llamado",data);
         try{
