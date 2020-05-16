@@ -352,7 +352,7 @@ io.on('connection', function (socket) {
 
 ami.on('eventBridgeEnter', function(data){
     console.log(data);
-    if(data.Context == 'from-internal' || data.Context == 'preview' || data.Context == 'conference_1'|| data.Context== 'prueba'){
+    if(data.Context == 'from-internal' || data.Context == 'preview' || data.Context == 'conference_1'|| data.Context == 'outcall-manual' || data.Context== 'prueba'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         if (clientes[usuario] === undefined) {
             return;
@@ -392,7 +392,7 @@ ami.on('eventBridgeEnter', function(data){
 
 ami.on('eventHangup', function(data){
     console.log(data);
-    if(data.Context == 'from-internal' || data.Context == 'preview' || data.Context == 'conference_1'|| data.Context== 'prueba'){
+    if(data.Context == 'from-internal' || data.Context == 'preview' || data.Context == 'conference_1'|| data.Context == 'outcall-manual' || data.Context== 'prueba'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         console.log(usuario+" termino llamado");
         if (clientes[usuario] === undefined) {
