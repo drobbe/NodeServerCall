@@ -355,6 +355,7 @@ ami.on('eventBridgeEnter', function(data){
     if(data.Context == 'from-internal' || data.Context == 'preview' || data.Context == 'conference_1'|| data.Context == 'outcall-manual' || data.Context== 'prueba'){
         usuario = data.Channel.split("-")[0].split("/")[1];
         if (clientes[usuario] === undefined) {
+            console.log("no se consiguo el usuario "+usuario);
             return;
         }
         clientes[usuario].status = 3;
