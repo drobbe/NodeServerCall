@@ -172,8 +172,9 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
+        clientes[usuario].tiempo = -1;
         //Antes del update verifico la variable
-        if(typeof clientes[usuario].tiempo !== 'undefined'){
+        if(clientes[usuario].tiempo !== -1){
             insertTimeAgent(socket.usuario, clientes[usuario].tiempo);
         }
         //Insertar latencia y una vez obtenida insertar con el estado
