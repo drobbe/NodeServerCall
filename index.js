@@ -173,8 +173,7 @@ io.on('connection', function (socket) {
         });
 
         //Antes del update verifico la variable
-        let tiempo = -1;
-        if(clientes[usuario].hasOwnProperty(tiempo)){
+        if(clientes[usuario] != undefined){
             insertTimeAgent(socket.usuario, clientes[usuario].tiempo);
         }
 
