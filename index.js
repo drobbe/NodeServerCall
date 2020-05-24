@@ -172,7 +172,10 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
-        insertTimeAgent(socket.usuario, clientes[usuario].tiempo);
+        //Antes del update verifico la variable
+        if(typeof clientes[usuario].tiempo !== 'undefined'){
+            insertTimeAgent(socket.usuario, clientes[usuario].tiempo);
+        }
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
 
