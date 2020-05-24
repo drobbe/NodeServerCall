@@ -173,9 +173,11 @@ io.on('connection', function (socket) {
         });
 
         //Antes del update verifico la variable
-        if(clientes[usuario].tiempo != undefined){
+        let tiempo = -1;
+        if(clientes[usuario].hasOwnProperty(tiempo)){
             insertTimeAgent(socket.usuario, clientes[usuario].tiempo);
         }
+
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
 
