@@ -173,7 +173,7 @@ io.on('connection', function (socket) {
         });
 
         //Antes del update verifico la variable
-        if(clientes[usuario].tiempo == undefined){
+        if(clientes[usuario].tiempo != undefined){
             insertTimeAgent(socket.usuario, clientes[usuario].tiempo);
         }
         //Insertar latencia y una vez obtenida insertar con el estado
