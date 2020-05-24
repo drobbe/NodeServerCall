@@ -56,7 +56,7 @@ function insertTimeAgent(agent, segundos){
     let values = [
         [agent, segundos]
     ]
-    return con.query('CALL core.sp_insert_time_agent(?)',values, function (err, result) {
+    return con.query('CALL core.sp_insert_time_agent(?,?)',values, function (err, result) {
         if (err) throw err;
         //console.log("Result sp: " + result);
     });
