@@ -51,9 +51,12 @@ function insertHistorico(dataInsert){
     });
 }
 
-function insertTimeAgent(agent){
+function insertTimeAgent(agent, segundos){
     //Actualizar el tiempo del registro anterior
-    return con.query('CALL core.sp_insert_time_agent(?)',agent, function (err, result) {
+    // let values = [
+    //     [agent, segundos]
+    // ]
+    return con.query(`CALL core.sp_insert_time_agent_v2('${agent}',${segundos})`, function (err, result) {
         if (err) throw err;
         //console.log("Result sp: " + result);
     });
@@ -109,7 +112,7 @@ io.on('connection', function (socket) {
 
         console.log("Llego 5");
 
-        insertTimeAgent(socket.usuario);
+        insertTimeAgent(socket.usuario, clientes[socket.usuario].tiempo);
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
 
@@ -169,7 +172,11 @@ io.on('connection', function (socket) {
             console.log("Result: " + result);
         });
 
-        insertTimeAgent(socket.usuario);
+        //Antes del update verifico la variable
+        if(clientes[usuario] != undefined){
+            insertTimeAgent(socket.usuario, clientes[usuario].tiempo);
+        }
+
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
 
@@ -223,7 +230,7 @@ io.on('connection', function (socket) {
         });
 
         //Actualizar el tiempo del registro anterior
-        insertTimeAgent(socket.usuario);
+        insertTimeAgent(socket.usuario, clientes[usuario].tiempo);
         socket.estado = estado;
 
         //Insertar latencia y una vez obtenida insertar con el estado
@@ -246,6 +253,8 @@ io.on('connection', function (socket) {
         })
         .catch(console.log)
 
+        clientes[usuario].tiempo = -1;
+
         console.log(socket.usuario + ' se ha pausado por ' + socket.estado);
 
     });
@@ -257,15 +266,14 @@ io.on('connection', function (socket) {
         }
         clientes[usuario].estado = '';
         clientes[usuario].status = 1;
-        clientes[usuario].tiempo = -1;
-
+        
         con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
 
         //Actualizar el tiempo del registro anterior
-        insertTimeAgent(socket.usuario);
+        insertTimeAgent(socket.usuario, clientes[usuario].tiempo);
         socket.estado = estado;
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
@@ -287,6 +295,7 @@ io.on('connection', function (socket) {
         })
         .catch(console.log)
 
+        clientes[usuario].tiempo = -1;
         console.log(socket.usuario + ' se ha se reconectado luego de ' + socket.estado);
     });
 
@@ -324,7 +333,7 @@ io.on('connection', function (socket) {
         });
 
         //Actualizar el tiempo del registro anterior
-        insertTimeAgent(socket.usuario);
+        insertTimeAgent(socket.usuario, clientes[socket.usuario].tiempo);
 
         shellExec(`asterisk -rx 'sip show peer ${socket.usuario}' | grep Status`).then(function(shell){
 
@@ -359,7 +368,7 @@ ami.on('eventBridgeEnter', function(data){
             return;
         }
         clientes[usuario].status = 3;
-        clientes[usuario].tiempo = -1;
+        
         con.query('Update agente set status = 3 where usuario = ?',usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -367,7 +376,7 @@ ami.on('eventBridgeEnter', function(data){
         io.to(clientes[usuario].sockedId).emit("llamadaContestada", { Data: data })
 
         //Actualizar el tiempo del registro anterior
-        insertTimeAgent(usuario);
+        insertTimeAgent(usuario, clientes[usuario].tiempo );
 
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
@@ -388,6 +397,8 @@ ami.on('eventBridgeEnter', function(data){
             insertHistorico(dataInsert)
         })
         .catch(console.log)
+
+        clientes[usuario].tiempo = -1;
     }
 });
 
@@ -400,7 +411,6 @@ ami.on('eventHangup', function(data){
             return;
         }
         clientes[usuario].status = 4;
-        clientes[usuario].tiempo = -1;
         clientes[usuario].estado = "Tipificando";
         // Posible solucion agregar parametro, actualizar solo cuando sea status 3 (llamada)
         // and status = ?
@@ -412,7 +422,7 @@ ami.on('eventHangup', function(data){
         io.to(clientes[usuario].sockedId).emit("llamadaTerminada", { Data: data });
 
         //Actualizar el tiempo del registro anterior
-        insertTimeAgent(usuario);
+        insertTimeAgent(usuario, clientes[usuario].tiempo);
 
         //Insertar latencia y una vez obtenida insertar con el estado
         shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
@@ -433,6 +443,8 @@ ami.on('eventHangup', function(data){
             insertHistorico(dataInsert)
         })
         .catch(console.log)
+
+        clientes[usuario].tiempo = -1;
     }
 });
 
@@ -445,7 +457,7 @@ ami.on('eventNewchannel', function(data){
             return;
             }
             clientes[usuario].status = 2;
-            clientes[usuario].tiempo = -1;
+            
             io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
             con.query('Update agente set status = 2 where usuario = ?',usuario, function (err, result) {
                 if (err) throw err;
@@ -453,7 +465,7 @@ ami.on('eventNewchannel', function(data){
             });
 
             //Actualizar el tiempo del registro anterior
-            insertTimeAgent(usuario);
+            insertTimeAgent(usuario, clientes[usuario].tiempo);
 
             //insertar a la tabla historica
             //Insertar latencia y una vez obtenida insertar con el estado
@@ -475,6 +487,8 @@ ami.on('eventNewchannel', function(data){
                 insertHistorico(dataInsert)
             })
             .catch(console.log)
+
+            clientes[usuario].tiempo = -1;
 
         }catch(e){
             console.log("Perdio Conexion",e);
@@ -537,7 +551,6 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         return;
     }
     clientes[usuario].status = 1;
-    clientes[usuario].tiempo = -1;
     clientes[usuario].estado = '';
     con.query('Update agente set status = 1 where usuario = ?',usuario, function (err, result) {
         if (err) throw err;
@@ -545,7 +558,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
     });
 
     //Actualizar el tiempo del registro anterior
-    insertTimeAgent(usuario);
+    insertTimeAgent(usuario, clientes[usuario].tiempo);
 
     //Insertar latencia y una vez obtenida insertar con el estado
     shellExec(`asterisk -rx 'sip show peer ${usuario}' | grep Status`).then(function(shell){
@@ -566,6 +579,8 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         insertHistorico(dataInsert)
     })
     .catch(console.log)
+
+    clientes[usuario].tiempo = -1;
 
     res.send(clientes[usuario]);
 
