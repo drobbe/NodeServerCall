@@ -45,7 +45,7 @@ con.connect(function(err) {
 
 function insertHistorico(dataInsert){
     //insertar a la tabla historica
-    return con.query('INSERT INTO `core`.`agente_his_pruebitas`(`agente`, `status`, latencia, campana, descripcion,id_status) VALUES ?', [dataInsert], function (err, result) {
+    return con.query('INSERT INTO `core`.`agente_his`(`agente`, `status`, latencia, campana, descripcion,id_status) VALUES ?', [dataInsert], function (err, result) {
         if (err) throw err;
         console.log("Result: " + result);
     });
