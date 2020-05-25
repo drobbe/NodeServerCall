@@ -253,6 +253,8 @@ io.on('connection', function (socket) {
         })
         .catch(console.log)
 
+        clientes[usuario].tiempo = -1;
+
         console.log(socket.usuario + ' se ha pausado por ' + socket.estado);
 
     });
