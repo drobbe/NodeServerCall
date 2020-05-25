@@ -264,8 +264,7 @@ io.on('connection', function (socket) {
         }
         clientes[usuario].estado = '';
         clientes[usuario].status = 1;
-        clientes[usuario].tiempo = -1;
-
+        
         con.query('Update agente set status = 1 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -294,6 +293,7 @@ io.on('connection', function (socket) {
         })
         .catch(console.log)
 
+        clientes[usuario].tiempo = -1;
         console.log(socket.usuario + ' se ha se reconectado luego de ' + socket.estado);
     });
 
@@ -366,7 +366,7 @@ ami.on('eventBridgeEnter', function(data){
             return;
         }
         clientes[usuario].status = 3;
-        clientes[usuario].tiempo = -1;
+        
         con.query('Update agente set status = 3 where usuario = ?',usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
@@ -395,6 +395,8 @@ ami.on('eventBridgeEnter', function(data){
             insertHistorico(dataInsert)
         })
         .catch(console.log)
+
+        clientes[usuario].tiempo = -1;
     }
 });
 
@@ -407,7 +409,6 @@ ami.on('eventHangup', function(data){
             return;
         }
         clientes[usuario].status = 4;
-        clientes[usuario].tiempo = -1;
         clientes[usuario].estado = "Tipificando";
         // Posible solucion agregar parametro, actualizar solo cuando sea status 3 (llamada)
         // and status = ?
@@ -440,6 +441,8 @@ ami.on('eventHangup', function(data){
             insertHistorico(dataInsert)
         })
         .catch(console.log)
+
+        clientes[usuario].tiempo = -1;
     }
 });
 
@@ -452,7 +455,7 @@ ami.on('eventNewchannel', function(data){
             return;
             }
             clientes[usuario].status = 2;
-            clientes[usuario].tiempo = -1;
+            
             io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
             con.query('Update agente set status = 2 where usuario = ?',usuario, function (err, result) {
                 if (err) throw err;
@@ -482,6 +485,8 @@ ami.on('eventNewchannel', function(data){
                 insertHistorico(dataInsert)
             })
             .catch(console.log)
+
+            clientes[usuario].tiempo = -1;
 
         }catch(e){
             console.log("Perdio Conexion",e);
@@ -544,7 +549,6 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         return;
     }
     clientes[usuario].status = 1;
-    clientes[usuario].tiempo = -1;
     clientes[usuario].estado = '';
     con.query('Update agente set status = 1 where usuario = ?',usuario, function (err, result) {
         if (err) throw err;
@@ -573,6 +577,8 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
         insertHistorico(dataInsert)
     })
     .catch(console.log)
+
+    clientes[usuario].tiempo = -1;
 
     res.send(clientes[usuario]);
 
