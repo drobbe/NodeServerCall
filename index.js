@@ -53,10 +53,10 @@ function insertHistorico(dataInsert){
 
 function insertTimeAgent(agent, segundos){
     //Actualizar el tiempo del registro anterior
-    let values = [
-        [agent, segundos]
-    ]
-    return con.query('CALL core.sp_insert_time_agent_v2(?,?)',values, function (err, result) {
+    // let values = [
+    //     [agent, segundos]
+    // ]
+    return con.query(`CALL core.sp_insert_time_agent_v2('${agent}',${segundos})`, function (err, result) {
         if (err) throw err;
         //console.log("Result sp: " + result);
     });
