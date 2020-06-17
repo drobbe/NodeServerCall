@@ -287,7 +287,8 @@ io.on('connection', function (socket) {
                 // console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
             }
 
-            let id_estado  = getIdByEstado(socket.estado);
+            // let id_estado  = getIdByEstado(socket.estado);
+            let id_estado  = 10;
             dataInsert = [
                 [socket.usuario,'1', latencia, socket.idcampana, 'Ha reconectado luego de ' + socket.estado, id_estado]
             ];
