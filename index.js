@@ -98,7 +98,7 @@ io.on('connection', function (socket) {
 
         console.log("usuario",usuario);
 
-        console.log("AQUIIIIIIIIIIIIIIIIIIIII Update agente set status = 0 where usuario = ? "+usuario , usuario);
+        console.log("AQUIIIIIIIIIIIIIIIIIIIII  Update agente set status = 0 where usuario = ? "+usuario , usuario);
 
         if(usuario == undefined){ 
             return;
