@@ -131,6 +131,8 @@ io.on('connection', function (socket) {
 
         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
         delete clientes[socket.usuario];
+
+
         if(estado.cerroSesion == undefined){
             setTimeout(
                 function(){
@@ -160,6 +162,9 @@ io.on('connection', function (socket) {
     });
 
     socket.on('join', function (usuario, idcampana, nomcampana) {
+
+        console.log("------"+socket+"++++++++");
+
         socket.usuario = usuario;
         socket.idcampana = idcampana;
         socket.nombreCampana = nomcampana;
@@ -217,6 +222,7 @@ io.on('connection', function (socket) {
         }
         clientes[usuario].estado = estado;
         clientes[usuario].status = 4;
+        
         con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
