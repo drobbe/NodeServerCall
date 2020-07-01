@@ -137,6 +137,8 @@ io.on('connection', function (socket) {
         if(estado.cerroSesion == undefined){
             setTimeout(
                 function(){
+                    console.log(clientes[socket.usuario]);
+                    
                     if(clientes[socket.usuario].reconecto == false);
                     {
                         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
