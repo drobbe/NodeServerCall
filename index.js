@@ -138,6 +138,7 @@ io.on('connection', function (socket) {
             setTimeout(
                 function(){
                     console.log(clientes[socket.usuario]);
+                    console.log(clientes[socket.usuario].reconecto);
                     
                     if(clientes[socket.usuario].reconecto === false);
                     {
