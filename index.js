@@ -139,7 +139,7 @@ io.on('connection', function (socket) {
                 function(){
                     console.log(clientes[socket.usuario]);
                     
-                    if(clientes[socket.usuario].reconecto == false);
+                    if(clientes[socket.usuario].reconecto === false);
                     {
                         console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
                         delete clientes[socket.usuario];
