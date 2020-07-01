@@ -100,7 +100,7 @@ io.on('connection', function (socket) {
 
         console.log("Update agente set status = 0 where usuario = ? "+usuario);
 
-        if(usuario == undefined){
+        if(usuario == undefined){ 
             return;
         }
 
@@ -166,7 +166,11 @@ io.on('connection', function (socket) {
 
         if(clientes[usuario] != undefined){
             clientes[usuario].reconecto = true;
-            console.log("---------------Reemplazo------------------");
+            console.log("--Reemplazo-- Update agente set status = "+ estado.status  +" where usuario = ?");
+            con.query('Update agente set status = '+ estado.status  +' where usuario = ?',usuario, function (err, result) {
+                if (err) throw err;
+                console.log("Result: " + result);
+            });
             return;
         }
 
