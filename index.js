@@ -166,8 +166,8 @@ io.on('connection', function (socket) {
 
         if(clientes[usuario] != undefined){
             clientes[usuario].reconecto = true;
-            console.log("--Reemplazo-- Update agente set status = " + estado.status  + " where usuario = ?");
-            con.query('Update agente set status = '+ estado.status +' where usuario = ?',usuario, function (err, result) {
+            console.log("--Reemplazo-- Update agente set status = " + clientes[usuario].status  + " where usuario = ?");
+            con.query('Update agente set status = '+ clientes[usuario].status +' where usuario = ?',usuario, function (err, result) {
                 if (err) throw err;
                 console.log("Result: " + result);
             });
