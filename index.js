@@ -145,6 +145,8 @@ io.on('connection', function (socket) {
                         console.log(socket.usuario + ' se desconecto del chat luego de 10 seg.' + socket.id);
                         delete clientes[socket.usuario];
 
+                    }else{  
+                        clientes[socket.usuario].reconecto = false;
                     }
 
                 },
@@ -174,7 +176,7 @@ io.on('connection', function (socket) {
             return;
         }
 
-        clientes[usuario].reconecto = false;
+         
         socket.usuario = usuario;
         socket.idcampana = idcampana;
         socket.nombreCampana = nomcampana;
