@@ -140,7 +140,7 @@ io.on('connection', function (socket) {
                     console.log(clientes[socket.usuario]);
                     console.log(clientes[socket.usuario].reconecto);
                     
-                    if(clientes[socket.usuario].reconecto === "4520");
+                    if(clientes[socket.usuario].reconecto === true)
                     {
                         console.log(socket.usuario + ' se desconecto del chat luego de 10 seg.' + socket.id);
                         delete clientes[socket.usuario];
