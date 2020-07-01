@@ -166,8 +166,8 @@ io.on('connection', function (socket) {
 
     socket.on('join', function (usuario, idcampana, nomcampana) {
 
-        test = socket.stringify();
-        console.log("------"+test+"++++++++");
+        //test = socket.stringify();
+        //console.log("------"+test+"++++++++");
 
         socket.usuario = usuario;
         socket.idcampana = idcampana;
