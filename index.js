@@ -98,7 +98,7 @@ io.on('connection', function (socket) {
 
         console.log("usuario",usuario);
 
-        console.log("AQUIIIIIIIIIIIIIIIIIIIII  Update agente set status = 0 where usuario = ? "+usuario , usuario);
+        console.log("Update agente set status = 0 where usuario = ? "+usuario);
 
         if(usuario == undefined){
             return;
@@ -141,7 +141,6 @@ io.on('connection', function (socket) {
                     console.log(clientes,usuario);
 
 
-<<<<<<< HEAD
                     if(clientes[usuario] != undefined){
                         oldsockedId = clientes[usuario].sockedId;
                         clientes[usuario] = estado;
@@ -149,10 +148,6 @@ io.on('connection', function (socket) {
                         console.log("---------------Reemplazo------------------");
                     }else{
                         console.log("---------------NO Reemplazo------------------");
-=======
-                    }else{  
-                        clientes[socket.usuario].reconecto = false;
->>>>>>> origin/dev
                     }
 
                 },
@@ -161,8 +156,6 @@ io.on('connection', function (socket) {
 
         }
         else{
-            clientes[socket.usuario].reconecto = false;
-            delete clientes[socket.usuario];
             console.log("---------------No es neseario reemplzar------------------");
         }
 
@@ -170,24 +163,6 @@ io.on('connection', function (socket) {
     });
 
     socket.on('join', function (usuario, idcampana, nomcampana) {
-<<<<<<< HEAD
-=======
-
-        //test = socket.stringify();
-        //console.log("------"+test+"++++++++");
-
-        if(clientes[usuario] != undefined){
-            clientes[usuario].reconecto = true;
-            console.log("--Reemplazo-- Update agente set status = " + clientes[usuario].status  + " where usuario = ?");
-            con.query('Update agente set status = '+ clientes[usuario].status +' where usuario = ?',usuario, function (err, result) {
-                if (err) throw err;
-                console.log("Result: " + result);
-            });
-            return;
-        }
-
-         
->>>>>>> origin/dev
         socket.usuario = usuario;
         socket.idcampana = idcampana;
         socket.nombreCampana = nomcampana;
