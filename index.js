@@ -174,6 +174,7 @@ io.on('connection', function (socket) {
             return;
         }
 
+        clientes[usuario].reconecto = false;
         socket.usuario = usuario;
         socket.idcampana = idcampana;
         socket.nombreCampana = nomcampana;
