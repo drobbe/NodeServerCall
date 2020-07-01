@@ -132,24 +132,16 @@ io.on('connection', function (socket) {
         })
         .catch(console.log)
 
-        console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
-        delete clientes[socket.usuario];
-
+      
 
         if(estado.cerroSesion == undefined){
             setTimeout(
                 function(){
-                    console.log("---------------Cayo------------------");
-                    console.log(clientes,usuario);
+                    if(clientes[socket.usuario].reconecto == false);
+                    {
+                        console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
+                        delete clientes[socket.usuario];
 
-
-                    if(clientes[usuario] != undefined){
-                        oldsockedId = clientes[usuario].sockedId;
-                        clientes[usuario] = estado;
-                        clientes[usuario].sockedId = oldsockedId;
-                        console.log("---------------Reemplazo------------------");
-                    }else{
-                        console.log("---------------NO Reemplazo------------------");
                     }
 
                 },
@@ -168,6 +160,12 @@ io.on('connection', function (socket) {
 
         //test = socket.stringify();
         //console.log("------"+test+"++++++++");
+
+        if(clientes[usuario] != undefined){
+            clientes[usuario].reconecto = true;
+            console.log("---------------Reemplazo------------------");
+            return;
+        }
 
         socket.usuario = usuario;
         socket.idcampana = idcampana;
@@ -210,6 +208,7 @@ io.on('connection', function (socket) {
         clientes[usuario].nombreCampana = nomcampana;
         clientes[usuario].tiempo = -1;
         clientes[usuario].estado = '';
+        clientes[usuario].reconecto = false;
 
     });
 
