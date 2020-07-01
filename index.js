@@ -605,7 +605,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-        //console.log(key, clientes[key]);
+        console.log(key, clientes[key]);
 
     });
 }
