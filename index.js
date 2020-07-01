@@ -155,6 +155,7 @@ io.on('connection', function (socket) {
 
         }
         else{
+            clientes[socket.usuario].reconecto = false;
             console.log("---------------No es neseario reemplzar------------------");
         }
 
