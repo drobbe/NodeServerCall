@@ -98,7 +98,7 @@ io.on('connection', function (socket) {
 
         console.log("usuario",usuario);
 
-        console.log("Update agente set status = 0 where usuario = ? "+usuario);
+        console.log("AQUIIIIIIIIIIIIIIIIIIIII Update agente set status = 0 where usuario = ? "+usuario , usuario);
 
         if(usuario == undefined){ 
             return;
@@ -610,7 +610,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-        console.log(key, clientes[key]);
+        //console.log(key, clientes[key]);
 
     });
 }
