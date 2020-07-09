@@ -98,9 +98,9 @@ io.on('connection', function (socket) {
 
         console.log("usuario",usuario);
 
-        console.log("Update agente set status = 0 where usuario = ? "+usuario);
+        console.log("AQUIIIIIIIIIIIIIIIIIIIII  Update agente set status = 0 where usuario = ? "+usuario , usuario);
 
-        if(usuario == undefined){
+        if(usuario == undefined){ 
             return;
         }
 
@@ -132,22 +132,21 @@ io.on('connection', function (socket) {
         })
         .catch(console.log)
 
-        console.log(socket.usuario + ' se desconecto del chat.' + socket.id);
-        delete clientes[socket.usuario];
+      
+
         if(estado.cerroSesion == undefined){
             setTimeout(
                 function(){
-                    console.log("---------------Cayo------------------");
-                    console.log(clientes,usuario);
+                    console.log(clientes[socket.usuario]);
+                    console.log(clientes[socket.usuario].reconecto);
+                    
+                    if(clientes[socket.usuario].reconecto === false)
+                    {
+                        console.log(socket.usuario + ' se desconecto del chat luego de 10 seg.' + socket.id);
+                        delete clientes[socket.usuario];
 
-
-                    if(clientes[usuario] != undefined){
-                        oldsockedId = clientes[usuario].sockedId;
-                        clientes[usuario] = estado;
-                        clientes[usuario].sockedId = oldsockedId;
-                        console.log("---------------Reemplazo------------------");
-                    }else{
-                        console.log("---------------NO Reemplazo------------------");
+                    }else{  
+                        clientes[socket.usuario].reconecto = false;
                     }
 
                 },
@@ -156,6 +155,8 @@ io.on('connection', function (socket) {
 
         }
         else{
+            clientes[socket.usuario].reconecto = false;
+            delete clientes[socket.usuario];
             console.log("---------------No es neseario reemplzar------------------");
         }
 
@@ -163,6 +164,21 @@ io.on('connection', function (socket) {
     });
 
     socket.on('join', function (usuario, idcampana, nomcampana) {
+
+        //test = socket.stringify();
+        //console.log("------"+test+"++++++++");
+
+        if(clientes[usuario] != undefined){
+            clientes[usuario].reconecto = true;
+            console.log("--Reemplazo-- Update agente set status = " + clientes[usuario].status  + " where usuario = ?");
+            con.query('Update agente set status = '+ clientes[usuario].status +' where usuario = ?',usuario, function (err, result) {
+                if (err) throw err;
+                console.log("Result: " + result);
+            });
+            return;
+        }
+
+         
         socket.usuario = usuario;
         socket.idcampana = idcampana;
         socket.nombreCampana = nomcampana;
@@ -204,6 +220,7 @@ io.on('connection', function (socket) {
         clientes[usuario].nombreCampana = nomcampana;
         clientes[usuario].tiempo = -1;
         clientes[usuario].estado = '';
+        clientes[usuario].reconecto = false;
 
     });
 
@@ -224,6 +241,7 @@ io.on('connection', function (socket) {
         }
         clientes[usuario].estado = estado;
         clientes[usuario].status = 4;
+        
         con.query('Update agente set status = 4 where usuario = ?',socket.usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
