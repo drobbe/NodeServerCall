@@ -96,7 +96,8 @@ io.on('connection', function (socket) {
 
         estado = clientes[socket.usuario];
 
-        console.log("usuario",usuario);
+        console.log("..usuario..",usuario);
+        console.log(socket);
 
         console.log("AQUIIIIIIIIIIIIIIIIIIIII  Update agente set status = 0 where usuario = ? "+usuario , usuario);
 
