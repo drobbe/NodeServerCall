@@ -150,7 +150,7 @@ io.on('connection', function (socket) {
                     }
 
                 },
-                10000
+                11000
             );
 
         }
