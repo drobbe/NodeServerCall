@@ -170,6 +170,7 @@ io.on('connection', function (socket) {
 
         if(clientes[usuario] != undefined){
             clientes[usuario].reconecto = true;
+            clientes[usuario].sockedId = {"sockedId": socket.id};
             socket.usuario = usuario;
             socket.idcampana = idcampana;
             socket.nombreCampana = nomcampana;
