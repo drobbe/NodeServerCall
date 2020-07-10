@@ -567,6 +567,10 @@ app.get('/asterisk/reload', function(req, res) {
         );
 });
 
+app.post('notificacion', function(req, res) {
+    console.log(request.body);
+});
+
 app.get('/usuario/:usuario/reanudar', function(req, res) {
 
     usuario = req.params.usuario;
