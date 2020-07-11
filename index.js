@@ -568,7 +568,7 @@ app.get('/asterisk/reload', function(req, res) {
 });
 
 app.post('/notificacion', function(req, res) {
-    console.log(req);
+    console.log(req.params);
     data = { mensaje:"Notificacion Enviada" };
     //io.to(clientes[usuario].sockedId).emit("notificaction", {Data: data});
     respuesta = {status:'ok',message:'El mensaje a sido enviado'};
