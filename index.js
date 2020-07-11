@@ -1,5 +1,5 @@
 var app = require('express')();
-
+var bodyParser = require('body-parser');
 var fs = require('fs');
 var ini = require('ini');
 const shellExec = require('shell-exec')
@@ -532,7 +532,7 @@ app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
-
+bodyParser = require('body-parser');
     // Request methods you wish to allow
     res.setHeader('Access-Control-Allow-Methods', 'GET');
 
