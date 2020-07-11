@@ -528,6 +528,12 @@ https.listen(3000, function () {
     console.log('listening on *:3000');
 });
 
+// Parse URL-encoded bodies (as sent by HTML forms)
+app.use(express.urlencoded());
+
+// Parse JSON bodies (as sent by API clients)
+app.use(express.json());
+
 app.use(function (req, res, next) {
 
     // Website you wish to allow to connect
@@ -538,6 +544,8 @@ app.use(function (req, res, next) {
 
     next();
 });
+
+
 
 
 
