@@ -569,6 +569,8 @@ app.get('/asterisk/reload', function(req, res) {
 
 app.post('notificacion', function(req, res) {
     console.log(request.body);
+    respuesta = {status:'ok',message:'El mensaje a sido enviado'};
+    res.status(200).json({});
 });
 
 app.get('/usuario/:usuario/reanudar', function(req, res) {
