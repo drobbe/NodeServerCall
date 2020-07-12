@@ -576,6 +576,11 @@ app.post('/notificacion', function(req, res) {
     usuario = req.body.usuario;
     mensaje = req.body.mensaje;
     data = { mensaje: mensaje };
+    if (clientes[usuario] === undefined) {
+        respuesta = {status:'false',message:'El mensaje no a sido enviado por que no esta conectado'};
+        res.status(200).json(respuesta);
+        return;
+    }
     io.to(clientes[usuario].sockedId).emit("notificaction", data);
     respuesta = {status:'ok',message:'El mensaje a sido enviado'};
     res.status(200).json(respuesta);
