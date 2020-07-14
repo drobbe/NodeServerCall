@@ -96,9 +96,6 @@ io.on('connection', function (socket) {
 
         estado = clientes[socket.usuario];
 
-        console.log("..usuario..",usuario);
-
-        console.log("AQUIIIIIIIIIIIIIIIIIIIII  Update agente set status = 0 where usuario = ? "+usuario , usuario);
 
         if(usuario == undefined){ 
             return;
@@ -142,7 +139,7 @@ io.on('connection', function (socket) {
                     
                     if(clientes[socket.usuario].reconecto === false)
                     {
-                        console.log(socket.usuario + ' se desconecto del chat luego de 10 seg.' + socket.id);
+                        console.log(socket.usuario + ' se desconecto del chat luego de 15 seg.' + socket.id);
                         delete clientes[socket.usuario];
 
                     }else{  
@@ -633,7 +630,7 @@ app.get('/usuario/:usuario/reanudar', function(req, res) {
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function(key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-        //console.log(key, clientes[key]);
+        console.log(key, clientes[key]);
 
     });
 }
