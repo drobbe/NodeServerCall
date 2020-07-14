@@ -134,7 +134,6 @@ io.on('connection', function (socket) {
         if(estado.cerroSesion == undefined){
             setTimeout(
                 function(){
-                    console.log(clientes[socket.usuario]);
                     console.log(clientes[socket.usuario].reconecto);
                     
                     if(clientes[socket.usuario].reconecto === false)
@@ -142,7 +141,7 @@ io.on('connection', function (socket) {
                         console.log(socket.usuario + ' se desconecto del chat luego de 15 seg.' + socket.id);
                         delete clientes[socket.usuario];
 
-                    }else{  
+                    }else{ 
                         clientes[socket.usuario].reconecto = false;
                     }
 
