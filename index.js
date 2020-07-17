@@ -573,7 +573,7 @@ app.post('/notificacion', function(req, res) {
     mensaje = req.body.mensaje;
     data = { mensaje: mensaje };
     if (clientes[usuario] === undefined) {
-        respuesta = {status:'false',message:'El mensaje no a sido enviado por que no esta conectado'};
+        respuesta = {status:'false',message:'El mensaje no a sido enviado por que no esta conectado el usuario: '+usuario};
         res.status(200).json(respuesta);
         return;
     }
