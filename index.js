@@ -5,6 +5,7 @@ var ini = require("ini");
 const statusPublisher = require("./status.publisher");
 const shellExec = require("shell-exec");
 const config = ini.parse(fs.readFileSync("/var/www/html/class/db/conf.ini", "utf-8"));
+let statusArray = require("./file.json");
 
 console.log("Configuraciones: " + config.sigma.userDB);
 
@@ -46,7 +47,8 @@ function insertHistorico(dataInsert) {
         `SELECT
                         a.uid_workspace id_project,
                         c.uid_workspace id_cliente,
-                        c.id id_client_mibotair 
+                        c.id id_client_mibotair,
+                        c.time_zone
                     FROM
                         batch.carga cg
                         INNER JOIN batch.asignacion a ON a.id = cg.asignacion_id
@@ -60,6 +62,11 @@ function insertHistorico(dataInsert) {
                 console.log("consulta pase a air", err);
             } else {
                 if (result.length > 0) {
+                    let dateStatus = new Date().toLocaleString("es-ES", {
+                        timeZone: result[0].time_zone,
+                    });
+                    let description = statusArray.find((sa) => sa.id === dataInsert[4]);
+
                     const payload_publish = {
                         meta: {
                             ip: "34.95.187.108",
@@ -71,11 +78,11 @@ function insertHistorico(dataInsert) {
                             uid_project: result[0].id_project,
                             uid_client: result[0].id_cliente,
                             id_client_mibotair: result[0].id_client_mibotair,
+                            datetime: dateStatus,
                             agent: dataInsert[0],
-                            status: dataInsert[1],
                             latency: dataInsert[2],
                             campaign: dataInsert[3],
-                            description: dataInsert[4],
+                            description: description.nombre,
                             id_status: dataInsert[5],
                         },
                     };

@@ -1,0 +1,46 @@
+[
+    {
+        "id": 1,
+        "nombre": "Hablando"
+    },
+    {
+        "id": 2,
+        "nombre": "Tipificando"
+    },
+    {
+        "id": 3,
+        "nombre": "Baño"
+    },
+    {
+        "id": 4,
+        "nombre": "Descanso"
+    },
+    {
+        "id": 5,
+        "nombre": "Soporte"
+    },
+    {
+        "id": 6,
+        "nombre": "Back office"
+    },
+    {
+        "id": 7,
+        "nombre": "Capacitación"
+    },
+    {
+        "id": 8,
+        "nombre": "Reunion"
+    },
+    {
+        "id": 9,
+        "nombre": "Desconectado"
+    },
+    {
+        "id": 10,
+        "nombre": "Conectado"
+    },
+    {
+        "id": 11,
+        "nombre": "Gestionando"
+    }
+]
