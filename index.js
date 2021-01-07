@@ -82,7 +82,7 @@ function insertHistorico(dataInsert) {
                             agent: dataInsert[0],
                             latency: dataInsert[2],
                             campaign: dataInsert[3],
-                            description: description.nombre,
+                            description: description.nombre ? description.nombre : "",
                             id_status: dataInsert[5],
                         },
                     };
