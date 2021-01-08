@@ -56,7 +56,7 @@ function insertHistorico(dataInsert) {
                     WHERE
                         cg.id = ?
                         AND a.uid_workspace IS NOT NULL`,
-        dataInsert[3],
+        [dataInsert[3]],
         function (err, result) {
             if (err) {
                 console.log("consulta pase a air", err);
