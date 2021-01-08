@@ -55,16 +55,16 @@ function insertHistorico(dataInsert) {
                     WHERE
                         cg.id = ?
                         AND a.uid_workspace IS NOT NULL`;
-    con.query(sqlWorkspace, [dataInsert[3]], function (err, result) {
+    con.query(sqlWorkspace, [dataInsert[0][3]], function (err, result) {
         if (err) {
             console.log("error consulta pase a air", err);
         } else {
-            console.log("OK PUBLICARA", dataInsert, sqlWorkspace, dataInsert[3], result);
+            console.log("OK PUBLICARA", dataInsert, dataInsert[0][3], result);
             if (result.length > 0) {
                 let dateStatus = new Date().toLocaleString("es-ES", {
                     timeZone: result[0].time_zone,
                 });
-                let description = statusArray.find((sa) => sa.id === dataInsert[4]);
+                let description = statusArray.find((sa) => sa.id === dataInsert[0][4]);
 
                 const payload_publish = {
                     meta: {
@@ -78,11 +78,11 @@ function insertHistorico(dataInsert) {
                         uid_client: result[0].id_cliente,
                         id_client_mibotair: result[0].id_client_mibotair,
                         datetime: dateStatus,
-                        agent: dataInsert[0],
-                        latency: dataInsert[2],
-                        campaign: dataInsert[3],
+                        agent: dataInsert[0][0],
+                        latency: dataInsert[0][2],
+                        campaign: dataInsert[0][3],
                         description: description.nombre ? description.nombre : "",
-                        id_status: dataInsert[5],
+                        id_status: dataInsert[0][5],
                     },
                 };
                 statusPublisher.publish(payload_publish);
