@@ -55,11 +55,11 @@ function insertHistorico(dataInsert) {
                     WHERE
                         cg.id = ?
                         AND a.uid_workspace IS NOT NULL`;
-    con.query(sqlWorkspace, [dataInsert[0][3]], function (err, result) {
+    con.query(sqlWorkspace, dataInsert[0][3], function (err, result) {
         if (err) {
             console.log("error consulta pase a air", err);
         } else {
-            console.log("OK PUBLICARA", dataInsert, dataInsert[0][3], result);
+            console.log("OK PUBLICARA", dataInsert[0][3], result);
             if (result.length > 0) {
                 let dateStatus = new Date().toLocaleString("es-ES", {
                     timeZone: result[0].time_zone,
