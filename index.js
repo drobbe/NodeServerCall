@@ -64,8 +64,9 @@ function insertHistorico(dataInsert) {
                 let dateStatus = new Date().toLocaleString("es-ES", {
                     timeZone: result[0].time_zone,
                 });
-                console.log(statusArray, description, dataInsert[0][4]);
+                console.log(statusArray, dataInsert[0][4]);
                 let description = statusArray.find((sa) => sa.id === dataInsert[0][4]);
+                console.log(description);
 
                 const payload_publish = {
                     meta: {
