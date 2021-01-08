@@ -43,8 +43,7 @@ con.connect(function (err) {
 });
 
 function insertHistorico(dataInsert) {
-    con.query(
-        `SELECT
+    let sqlWorkspace = `SELECT
                         a.uid_workspace id_project,
                         c.uid_workspace id_cliente,
                         c.id id_client_mibotair,
@@ -55,43 +54,41 @@ function insertHistorico(dataInsert) {
                         INNER JOIN batch.cliente c ON c.id = a.id_cliente 
                     WHERE
                         cg.id = ?
-                        AND a.uid_workspace IS NOT NULL`,
-        [dataInsert[3]],
-        function (err, result) {
-            if (err) {
-                console.log("error consulta pase a air", err);
-            } else {
-                console.log("OK PUBLICARA", result);
-                if (result.length > 0) {
-                    let dateStatus = new Date().toLocaleString("es-ES", {
-                        timeZone: result[0].time_zone,
-                    });
-                    let description = statusArray.find((sa) => sa.id === dataInsert[4]);
+                        AND a.uid_workspace IS NOT NULL`;
+    con.query(sqlWorkspace, [dataInsert[3]], function (err, result) {
+        if (err) {
+            console.log("error consulta pase a air", err);
+        } else {
+            console.log("OK PUBLICARA", sqlWorkspace, dataInsert[3], result);
+            if (result.length > 0) {
+                let dateStatus = new Date().toLocaleString("es-ES", {
+                    timeZone: result[0].time_zone,
+                });
+                let description = statusArray.find((sa) => sa.id === dataInsert[4]);
 
-                    const payload_publish = {
-                        meta: {
-                            ip: "34.95.187.108",
-                            time: new Date(),
-                            user: [],
-                            origin: "mibotair.agents.status",
-                        },
-                        data: {
-                            uid_project: result[0].id_project,
-                            uid_client: result[0].id_cliente,
-                            id_client_mibotair: result[0].id_client_mibotair,
-                            datetime: dateStatus,
-                            agent: dataInsert[0],
-                            latency: dataInsert[2],
-                            campaign: dataInsert[3],
-                            description: description.nombre ? description.nombre : "",
-                            id_status: dataInsert[5],
-                        },
-                    };
-                    statusPublisher.publish(payload_publish);
-                }
+                const payload_publish = {
+                    meta: {
+                        ip: "34.95.187.108",
+                        time: new Date(),
+                        user: [],
+                        origin: "mibotair.agents.status",
+                    },
+                    data: {
+                        uid_project: result[0].id_project,
+                        uid_client: result[0].id_cliente,
+                        id_client_mibotair: result[0].id_client_mibotair,
+                        datetime: dateStatus,
+                        agent: dataInsert[0],
+                        latency: dataInsert[2],
+                        campaign: dataInsert[3],
+                        description: description.nombre ? description.nombre : "",
+                        id_status: dataInsert[5],
+                    },
+                };
+                statusPublisher.publish(payload_publish);
             }
         }
-    );
+    });
 
     //insertar a la tabla historica
 
