@@ -17,7 +17,7 @@ exports.publish = function (payload) {
             channel.assertExchange(exchange, "fanout");
 
             channel.publish(exchange, "mibot.mibotair.agent.status", Buffer.from(JSON.stringify(payload)));
-            console.log(" [x] Sent %s", payload);
+            console.log(" [x] Sent %s exchange", payload);
         });
     });
 };
