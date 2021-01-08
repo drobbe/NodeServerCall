@@ -59,7 +59,7 @@ function insertHistorico(dataInsert) {
         if (err) {
             console.log("error consulta pase a air", err);
         } else {
-            console.log("OK PUBLICARA", sqlWorkspace, dataInsert[3], result);
+            console.log("OK PUBLICARA", dataInsert, sqlWorkspace, dataInsert[3], result);
             if (result.length > 0) {
                 let dateStatus = new Date().toLocaleString("es-ES", {
                     timeZone: result[0].time_zone,
