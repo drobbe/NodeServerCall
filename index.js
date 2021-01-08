@@ -61,7 +61,7 @@ function insertHistorico(dataInsert) {
             if (err) {
                 console.log("error consulta pase a air", err);
             } else {
-                console.console.log("OK PUBLICARA", result);
+                console.log("OK PUBLICARA", result);
                 if (result.length > 0) {
                     let dateStatus = new Date().toLocaleString("es-ES", {
                         timeZone: result[0].time_zone,
