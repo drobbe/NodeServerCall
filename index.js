@@ -10,7 +10,7 @@ let statusArray = require("./status.json");
 console.log("Configuraciones: " + config.sigma.userDB);
 
 var options = {
-    key: fs.readFileSync("/etc/apache2/ssl/mibot.key.pem"),
+    key: fs.readFileSync("/etc/apache2/ssl2/mibot.key.pem"),
     cert: fs.readFileSync(config.sigma.certNode),
 };
 var https = require("https").createServer(options, app);
