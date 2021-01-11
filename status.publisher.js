@@ -3,7 +3,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 var RABBIT_URL = process.env.RABBITMQ_URI;
-var RABBIT_EXCHANGE = process.env.RABBIT_EXCHANGE_DEV;
+var RABBIT_EXCHANGE = process.env.EXCHANGE_PUBLISHER;
 const amqpConnect = amqp.connect(RABBIT_URL);
 
 let channel = null;
@@ -24,9 +24,5 @@ amqpConnect
     });
 
 module.exports.publish = (payload) => {
-    channel.publish(
-        process.env.RABBIT_EXCHANGE_DEV,
-        "mibot.mibotair.agent.status",
-        Buffer.from(JSON.stringify(payload))
-    );
+    channel.publish(RABBIT_EXCHANGE, "mibot.mibotair.agent.status", Buffer.from(JSON.stringify(payload)));
 };
