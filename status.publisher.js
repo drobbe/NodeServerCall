@@ -24,5 +24,6 @@ amqpConnect
     });
 
 module.exports.publish = (payload) => {
+    console.info("PUBLICARA", payload);
     channel.publish(RABBIT_EXCHANGE, "mibot.mibotair.agent.status", Buffer.from(JSON.stringify(payload)));
 };
