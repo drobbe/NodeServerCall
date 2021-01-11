@@ -14,7 +14,7 @@ amqpConnect
     })
     .then((ch) => {
         console.info("Conectado al exchange rabbitmq: " + RABBIT_EXCHANGE);
-        return ch.assertExchange(RABBIT_EXCHANGE).then((ok) => {
+        return ch.assertExchange(RABBIT_EXCHANGE, "fanout").then((ok) => {
             channel = ch;
         });
     })
