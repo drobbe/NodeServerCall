@@ -3,6 +3,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 var RABBIT_URL = process.env.RABBITMQ_URI;
+var RABBIT_EXCHANGE = process.env.RABBIT_EXCHANGE_DEV;
 const amqpConnect = amqp.connect(RABBIT_URL);
 
 let channel = null;
