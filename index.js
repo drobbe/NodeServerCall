@@ -90,7 +90,7 @@ function insertHistorico(dataInsert) {
                         id_status: dataInsert[0][5],
                     },
                 };
-                // statusPublisher.publish(payload_publish);
+                statusPublisher.publish(payload_publish);
             }
         }
     });
