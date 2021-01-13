@@ -196,7 +196,7 @@ io.on("connection", function (socket) {
 
   socket.on("join", function (usuario, idcampana, nomcampana, userName) {
     //test = socket.stringify();
-    //console.log("------"+test+"++++++++");
+    console.log(userName);
 
     if (clientes[usuario] != undefined) {
       clientes[usuario].reconecto = true;
