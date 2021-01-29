@@ -686,6 +686,8 @@ const alertaAgendamientos = () => {
     arrayAgentes.push(key);
   });
   arrayAgentes.map((i) => `'${i}'`).join(",");
+
+  if (arrayAgentes.length === 0) return;
   const query = `SELECT *, TIMESTAMPDIFF( MINUTE, agendado, NOW()) diferencia FROM llamadas_programadas WHERE agente IN ( ${arrayAgentes} ) AND now() >= agendado AND STATUS = 1 HAVING ( diferencia > 0 AND cantidad_alertas < 1 ) OR ( diferencia > 15 AND cantidad_alertas < 2 ) OR ( diferencia > 30 AND cantidad_alertas < 3 ) OR ( diferencia > 60 AND cantidad_alertas < 3)`;
   con.query(query, function (error, results, fields) {
     if (error) {
