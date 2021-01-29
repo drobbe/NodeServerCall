@@ -694,7 +694,10 @@ const alertaAgendamientos = () => {
       console.log("error consulta de Agendamientos", error);
     } else {
       results.forEach((agendamiento) => {
-        enviarAlertaAgendamiento(agendamiento, `Tiene un nuevo agendamiento disponible que debio ser llamado hace ${agendamiento.diferencia} Minutos`);
+        enviarAlertaAgendamiento(
+          agendamiento,
+          `Tiene un nuevo agendamiento disponible hace ${agendamiento.diferencia} Minutos, cliente: ${nombre_cliente} - ${rut}`
+        );
       });
     }
   });
