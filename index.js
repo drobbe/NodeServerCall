@@ -686,6 +686,14 @@ const alertaAgendamientos = () => {
     arrayAgentes.push(key);
   });
   console.log(arrayAgentes);
+  const query = `SELECT * FROM llamadas_programadas WHERE agente IN ('edgard1394_gmail.com') AND now() >= agendado and status = 1`;
+  connection.query($query, function (error, results, fields) {
+    if (error) {
+      console.log("error consulta de Agendamientos", err);
+    } else {
+      console.log(results);
+    }
+  });
 };
 
 setInterval(alertaAgendamientos, 10000);
