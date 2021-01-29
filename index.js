@@ -701,7 +701,11 @@ const alertaAgendamientos = () => {
 const enviarAlertaAgendamiento = (agendamiento, mensaje) => {
   console.log("Enviando Mensaje");
   console.log(agendamiento);
-  io.to(clientes[agendamiento.agente]?.sockedId).emit("eventHangup", { Data: mensaje });
+
+  if (clientes[agendamiento.agente] === undefined) {
+    return;
+  }
+  io.to(clientes[agendamiento.agente].sockedId).emit("eventHangup", { Data: mensaje });
 };
 
 setInterval(alertaAgendamientos, 10000);
