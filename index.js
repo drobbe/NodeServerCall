@@ -691,7 +691,7 @@ const alertaAgendamientos = () => {
     if (error) {
       console.log("error consulta de Agendamientos", err);
     } else {
-      results.array.forEach((agendamiento) => {
+      results.forEach((agendamiento) => {
         enviarAlertaAgendamiento(agendamiento.agente, "gg");
       });
     }
