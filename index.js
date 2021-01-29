@@ -691,19 +691,17 @@ const alertaAgendamientos = () => {
     if (error) {
       console.log("error consulta de Agendamientos", err);
     } else {
-      results.array.forEach(agendamiento => {
-        enviarAlertaAgendamiento(agendamiento.agente,"gg")
+      results.array.forEach((agendamiento) => {
+        enviarAlertaAgendamiento(agendamiento.agente, "gg");
       });
     }
   });
 };
 
-
-const enviarAlertaAgendamiento  (agendamiento,mensaje) => {
+const enviarAlertaAgendamiento = (agendamiento, mensaje) => {
   console.log("Enviando Mensaje");
   console.log(agendamiento);
   io.to(clientes[agendamiento.agente]?.sockedId).emit("eventHangup", { Data: mensaje });
-
-}
+};
 
 setInterval(alertaAgendamientos, 10000);
