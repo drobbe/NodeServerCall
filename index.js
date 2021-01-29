@@ -692,6 +692,7 @@ const alertaAgendamientos = () => {
       console.log("error consulta de Agendamientos", err);
     } else {
       console.log(results);
+      console.log(fields);
     }
   });
 };
