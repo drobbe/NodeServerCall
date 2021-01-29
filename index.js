@@ -681,7 +681,9 @@ setInterval(function () {
 }, 3000);
 
 const alertaAgendamientos = () => {
-  console.log("gg");
+  let arrayAgentes = clientes.map((agentes) => agentes.agent);
+
+  console.log(arrayAgentes);
 };
 
-setInterval(alertaAgendamientos, 60000);
+setInterval(alertaAgendamientos, 10000);
