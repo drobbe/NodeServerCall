@@ -679,3 +679,9 @@ setInterval(function () {
       .catch(console.log);
   });
 }, 3000);
+
+const alertaAgendamientos = () => {
+  console.log("gg");
+};
+
+setInterval(alertaAgendamientos, 60000);
