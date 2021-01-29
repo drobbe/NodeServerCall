@@ -692,7 +692,7 @@ const alertaAgendamientos = () => {
       console.log("error consulta de Agendamientos", err);
     } else {
       results.forEach((agendamiento) => {
-        enviarAlertaAgendamiento(agendamiento.agente, "gg");
+        enviarAlertaAgendamiento(agendamiento, "gg");
       });
     }
   });
