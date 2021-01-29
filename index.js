@@ -696,7 +696,7 @@ const alertaAgendamientos = () => {
       results.forEach((agendamiento) => {
         enviarAlertaAgendamiento(
           agendamiento,
-          `Tiene un nuevo agendamiento disponible hace ${agendamiento.diferencia} Minutos, cliente: ${nombre_cliente} - ${rut}`
+          `Tiene un nuevo agendamiento disponible hace ${agendamiento.diferencia} Minutos, cliente: ${agendamiento.nombre_cliente} - ${agendamiento.rut}`
         );
       });
     }
