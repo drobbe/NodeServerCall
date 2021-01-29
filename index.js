@@ -685,16 +685,25 @@ const alertaAgendamientos = () => {
   Object.keys(clientes).forEach(function (key) {
     arrayAgentes.push(key);
   });
-  console.log(arrayAgentes);
-  const query = `SELECT * FROM llamadas_programadas WHERE agente IN ('edgard1394_gmail.com') AND now() >= agendado and status = 1`;
+  arrayAgentes.map((i) => `'${i}'`).join(",");
+  const query = `SELECT * FROM llamadas_programadas WHERE agente IN ('${arrayAgentes}') AND now() >= agendado and status = 1`;
   con.query(query, function (error, results, fields) {
     if (error) {
       console.log("error consulta de Agendamientos", err);
     } else {
-      console.log(results);
-      console.log(fields);
+      results.array.forEach(agendamiento => {
+        enviarAlertaAgendamiento(agendamiento.agente,"gg")
+      });
     }
   });
 };
+
+
+const enviarAlertaAgendamiento  (agendamiento,mensaje) => {
+  console.log("Enviando Mensaje");
+  console.log(agendamiento);
+  io.to(clientes[agendamiento.agente]?.sockedId).emit("eventHangup", { Data: mensaje });
+
+}
 
 setInterval(alertaAgendamientos, 10000);
