@@ -686,10 +686,10 @@ const alertaAgendamientos = () => {
     arrayAgentes.push(key);
   });
   arrayAgentes.map((i) => `'${i}'`).join(",");
-  const query = `SELECT *, TIMESTAMPDIFF( MINUTE, agendado, NOW()) diferencia FROM llamadas_programadas WHERE agente IN ( ${arrayAgentes}' ) AND now() >= agendado AND STATUS = 1 HAVING ( diferencia > 0 AND cantidad_alertas < 1 ) OR ( diferencia > 15 AND cantidad_alertas < 2 ) OR ( diferencia > 30 AND cantidad_alertas < 3 ) OR ( diferencia > 60 AND cantidad_alertas < 3)`;
+  const query = `SELECT *, TIMESTAMPDIFF( MINUTE, agendado, NOW()) diferencia FROM llamadas_programadas WHERE agente IN ( ${arrayAgentes} ) AND now() >= agendado AND STATUS = 1 HAVING ( diferencia > 0 AND cantidad_alertas < 1 ) OR ( diferencia > 15 AND cantidad_alertas < 2 ) OR ( diferencia > 30 AND cantidad_alertas < 3 ) OR ( diferencia > 60 AND cantidad_alertas < 3)`;
   con.query(query, function (error, results, fields) {
     if (error) {
-      console.log("error consulta de Agendamientos", err);
+      console.log("error consulta de Agendamientos", error);
     } else {
       results.forEach((agendamiento) => {
         enviarAlertaAgendamiento(agendamiento, `Tiene un nuevo agendamiento disponible que debio ser llamado hace ${agendamiento.diferencia} Minutos`);
