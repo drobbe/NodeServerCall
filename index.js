@@ -59,38 +59,52 @@ function insertHistorico(dataInsert) {
         if (err) {
             console.log("error consulta pase a air", err);
         } else {
-            //console.log("OK PUBLICARA", dataInsert[0][3], result);
-            if (result.length > 0 && dataInsert[0][5] !== null) {
-                let dateStatus = new Date().toLocaleString("es-ES", {
-                    timeZone: result[0].time_zone,
-                });
-                //console.log(statusArray, dataInsert[0][4]);
-                let description = statusArray.find((sa) => sa.id === dataInsert[0][5]);
-                //console.log(description);
+            try {
+                //console.log("OK PUBLICARA", dataInsert[0][3], result);
+                if (result.length > 0 && dataInsert[0][5] !== null) {
+                    let dateStatus = new Date().toLocaleString("es-ES", {
+                        timeZone: result[0].time_zone,
+                    });
+                    //console.log(statusArray, dataInsert[0][4]);
+                    let description = statusArray.find((sa) => sa.id === dataInsert[0][5]);
+                    //console.log(description);
 
-                const payload_publish = {
-                    meta: {
-                        ip: "34.95.187.108",
-                        time: new Date(),
-                        user: [],
-                        origin: "mibotair.agents.status",
-                    },
-                    data: {
-                        uid_project: result[0].id_project,
-                        uid_client: result[0].id_cliente,
-                        id_client_mibotair: result[0].id_client_mibotair,
-                        datetime: dateStatus,
-                        agent: dataInsert[0][0],
-                        latency: dataInsert[0][2],
-                        campaign: dataInsert[0][3],
-                        description:
-                            description && description.nombre !== undefined && description.nombre !== null
-                                ? description.nombre
-                                : "",
-                        id_status: dataInsert[0][5],
-                    },
-                };
-                statusPublisher.publish(payload_publish);
+                    const payload_publish = {
+                        meta: {
+                            ip: "34.95.187.108",
+                            time: new Date(),
+                            user: [],
+                            origin: "mibotair.agents.status",
+                        },
+                        data: {
+                            uid_project: result[0].id_project,
+                            uid_client: result[0].id_cliente,
+                            id_client_mibotair: result[0].id_client_mibotair,
+                            datetime: dateStatus,
+                            agent: dataInsert[0][0],
+                            latency: dataInsert[0][2],
+                            campaign: dataInsert[0][3],
+                            description:
+                                description && description.nombre !== undefined && description.nombre !== null
+                                    ? description.nombre
+                                    : "",
+                            id_status: dataInsert[0][5],
+                        },
+                    };
+                    statusPublisher.publish(payload_publish);
+                }
+            } catch (error) {
+                console.log(error);
+                let dataLog = JSON.stringify(payload_publish);
+
+                return con.query(
+                    "INSERT INTO `batch`.`log_consumer_status`(`data`) VALUES ?",
+                    [dataLog],
+                    function (err, result) {
+                        if (err) throw err;
+                        console.log("Error logeando error : " + result);
+                    }
+                );
             }
         }
     });
