@@ -95,7 +95,7 @@ function insertHistorico(dataInsert) {
                 }
             } catch (error) {
                 console.log(error);
-                let dataLog = JSON.stringify(payload_publish);
+                //let dataLog = JSON.stringify(payload_publish);
 
                 return con.query(
                     "INSERT INTO `batch`.`log_consumer_status`(`data`) VALUES ?",
