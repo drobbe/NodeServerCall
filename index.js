@@ -707,7 +707,7 @@ const enviarAlertaAgendamiento = (agendamiento, mensaje) => {
   if (clientes[agendamiento.agente] === undefined) {
     return;
   }
-  data = { mensaje: mensaje };
+  data = { mensaje: mensaje, agendamiento: true };
   io.to(clientes[agendamiento.agente].sockedId).emit("notificaction", data);
   actualizarAlertaBD(agendamiento.id);
 };
