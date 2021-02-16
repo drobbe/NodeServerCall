@@ -168,7 +168,7 @@ io.on("connection", function (socket) {
             return;
         }
 
-        con.query("Update agente set status = 0 where usuario = ?", usuario, function (err, result) {
+        con.query("Update agente set status = 0, campana = null where usuario = ?", usuario, function (err, result) {
             if (err) throw err;
             console.log("Result: " + result);
         });
