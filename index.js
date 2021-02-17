@@ -222,10 +222,18 @@ io.on("connection", function (socket) {
             socket.idcampana = idcampana;
             socket.nombreCampana = nomcampana;
             socket.userName = userName;
+
+            if (environment == "regi") {
+                clientes[usuario].status = 11;
+            } else {
+                clientes[usuario].status = 1;
+            }
+
             console.log(
                 "--Reemplazo-- Update agente set status = " + clientes[usuario].status + " where usuario = ?",
                 usuario
             );
+
             con.query(
                 "Update agente set status = " + clientes[usuario].status + " where usuario = ?",
                 usuario,
