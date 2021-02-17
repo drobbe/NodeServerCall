@@ -223,10 +223,10 @@ io.on("connection", function (socket) {
             socket.nombreCampana = nomcampana;
             socket.userName = userName;
 
-            if (environment == "regi") {
-                clientes[usuario].status = 11;
-            } else {
+            if (environment !== "regi") {
                 clientes[usuario].status = 1;
+            } else {
+                clientes[usuario].status = 11;
             }
 
             console.log(
