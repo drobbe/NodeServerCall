@@ -213,7 +213,7 @@ io.on("connection", function (socket) {
 
     socket.on("join", function (usuario, idcampana, nomcampana, userName, environment) {
         //test = socket.stringify();
-        console.log("JOIN", usuario, idcampana, nomcampana, userName);
+        console.log("JOIN", usuario, idcampana, nomcampana, userName, environment);
 
         if (clientes[usuario] != undefined) {
             clientes[usuario].reconecto = true;
