@@ -211,7 +211,7 @@ io.on("connection", function (socket) {
         }
     });
 
-    socket.on("join", function (usuario, idcampana, nomcampana, userName) {
+    socket.on("join", function (usuario, idcampana, nomcampana, userName, environment) {
         //test = socket.stringify();
         console.log(usuario, idcampana, nomcampana, userName);
 
@@ -234,7 +234,7 @@ io.on("connection", function (socket) {
                     console.dir("Result: " + result, { depth: null });
                 }
             );
-            if (userName == "changeCampaing") {
+            if (environment == "changeCampaing") {
                 insertTimeAgent(socket.usuario, -1);
                 clientes[usuario] = { sockedId: socket.id };
                 clientes[usuario].status = 1;
@@ -254,10 +254,19 @@ io.on("connection", function (socket) {
         socket.nombreCampana = nomcampana;
         socket.userName = userName;
 
-        con.query("Update agente set status = 1 where usuario = ?", socket.usuario, function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
+        let newStatus = 1;
+        if (environment == "regi") {
+            newStatus = 11;
+        }
+
+        con.query(
+            "Update agente set status = ? where usuario = ?",
+            [newStatus, socket.usuario],
+            function (err, result) {
+                if (err) throw err;
+                console.log("Result: " + result);
+            }
+        );
 
         //Antes del update verifico la variable
         if (clientes[usuario] != undefined) {
@@ -276,14 +285,16 @@ io.on("connection", function (socket) {
                     // console.log(`Latencia del user ${socket.usuario} => ${latencia}`);
                 }
 
-                dataInsert = [[socket.usuario, "1", latencia, socket.idcampana, "Usuario se conecto", 10]];
+                dataInsert = [
+                    [socket.usuario, newStatus.toString(), latencia, socket.idcampana, "Usuario se conecto", 10],
+                ];
                 insertHistorico(dataInsert);
             })
             .catch(console.log);
 
         console.log(socket.usuario + " se ha conectado." + socket.nombreCampana);
         clientes[usuario] = { sockedId: socket.id };
-        clientes[usuario].status = 1;
+        clientes[usuario].status = newStatus;
         clientes[usuario].nombre = usuario;
         clientes[usuario].idcampana = idcampana;
         clientes[usuario].nombreCampana = nomcampana;
