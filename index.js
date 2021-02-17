@@ -213,7 +213,7 @@ io.on("connection", function (socket) {
 
     socket.on("join", function (usuario, idcampana, nomcampana, userName, environment) {
         //test = socket.stringify();
-        console.log(usuario, idcampana, nomcampana, userName);
+        console.log("JOIN", usuario, idcampana, nomcampana, userName);
 
         if (clientes[usuario] != undefined) {
             clientes[usuario].reconecto = true;
@@ -714,7 +714,7 @@ function verficiarUsuarios() {
         console.log(key, clientes[key]);
     });
 }
-setInterval(verficiarUsuarios, 1500);
+//setInterval(verficiarUsuarios, 1500);
 
 setInterval(function () {
     Object.keys(clientes).forEach(function (key) {
