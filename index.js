@@ -222,15 +222,30 @@ io.on("connection", function (socket) {
             socket.idcampana = idcampana;
             socket.nombreCampana = nomcampana;
             socket.userName = userName;
-            console.log("--Reemplazo-- Update agente set status = " + clientes[usuario].status + " where usuario = ?");
+            console.log(
+                "--Reemplazo-- Update agente set status = " + clientes[usuario].status + " where usuario = ?",
+                usuario
+            );
             con.query(
                 "Update agente set status = " + clientes[usuario].status + " where usuario = ?",
                 usuario,
                 function (err, result) {
                     if (err) throw err;
-                    console.log("Result: " + result);
+                    console.dir("Result: " + result, { depth: null });
                 }
             );
+            if (userName == "changeCampaing") {
+                insertTimeAgent(socket.usuario, -1);
+                clientes[usuario] = { sockedId: socket.id };
+                clientes[usuario].status = 1;
+                clientes[usuario].nombre = usuario;
+                clientes[usuario].idcampana = idcampana;
+                clientes[usuario].nombreCampana = nomcampana;
+                clientes[usuario].userName = userName;
+                clientes[usuario].tiempo = -1;
+                clientes[usuario].estado = "";
+                clientes[usuario].reconecto = false;
+            }
             return;
         }
 
