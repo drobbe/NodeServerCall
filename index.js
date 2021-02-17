@@ -242,8 +242,6 @@ io.on("connection", function (socket) {
                 clientes[usuario].nombreCampana = nomcampana;
                 clientes[usuario].userName = userName;
                 clientes[usuario].tiempo = -1;
-                clientes[usuario].estado = "";
-                clientes[usuario].reconecto = false;
             }
             return;
         }
