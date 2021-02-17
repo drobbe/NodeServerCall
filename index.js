@@ -255,18 +255,16 @@ io.on("connection", function (socket) {
         socket.userName = userName;
 
         let newStatus = 1;
+        let queryDefault = "Update agente set status = ? where usuario = ?";
         if (environment == "regi") {
             newStatus = 11;
+            queryDefault = "Update agente set status = ?, campana = " + idcampana + " where usuario = ?";
         }
 
-        con.query(
-            "Update agente set status = ? where usuario = ?",
-            [newStatus, socket.usuario],
-            function (err, result) {
-                if (err) throw err;
-                console.log("Result: " + result);
-            }
-        );
+        con.query(queryDefault, [newStatus, socket.usuario], function (err, result) {
+            if (err) throw err;
+            console.log("Result: " + result);
+        });
 
         //Antes del update verifico la variable
         if (clientes[usuario] != undefined) {
