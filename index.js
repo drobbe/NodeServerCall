@@ -237,11 +237,14 @@ io.on("connection", function (socket) {
             if (userName == "changeCampaing") {
                 insertTimeAgent(socket.usuario, -1);
                 clientes[usuario] = { sockedId: socket.id };
+                clientes[usuario].status = 1;
                 clientes[usuario].nombre = usuario;
                 clientes[usuario].idcampana = idcampana;
                 clientes[usuario].nombreCampana = nomcampana;
                 clientes[usuario].userName = userName;
                 clientes[usuario].tiempo = -1;
+                clientes[usuario].estado = "";
+                clientes[usuario].reconecto = false;
             }
             return;
         }
