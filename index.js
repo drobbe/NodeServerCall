@@ -722,7 +722,7 @@ function verficiarUsuarios() {
         console.log(key, clientes[key]);
     });
 }
-//setInterval(verficiarUsuarios, 1500);
+setInterval(verficiarUsuarios, 1500);
 
 setInterval(function () {
     Object.keys(clientes).forEach(function (key) {
