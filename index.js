@@ -214,7 +214,10 @@ io.on("connection", function (socket) {
     socket.on("join", function (usuario, idcampana, nomcampana, userName, environment) {
         //test = socket.stringify();
         console.log("JOIN", usuario, idcampana, nomcampana, userName, environment);
-        if (typeof idcampana === "string") idcampana = null;
+        if (typeof idcampana === "string") {
+            io.to(socket.id).emit("notificaction", { mensaje: "Seleccione una campaña valida para conectarse" });
+            return;
+        }
 
         if (clientes[usuario] != undefined) {
             clientes[usuario].reconecto = true;
