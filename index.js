@@ -214,6 +214,7 @@ io.on("connection", function (socket) {
     socket.on("join", function (usuario, idcampana, nomcampana, userName, environment) {
         //test = socket.stringify();
         console.log("JOIN", usuario, idcampana, nomcampana, userName, environment);
+        if (typeof idcampana === "string") idcampana = null;
 
         if (clientes[usuario] != undefined) {
             clientes[usuario].reconecto = true;
@@ -266,13 +267,24 @@ io.on("connection", function (socket) {
         let queryDefault = "Update agente set status = ? where usuario = ?";
         if (environment == "regi") {
             newStatus = 11;
-            queryDefault = "Update agente set status = ?, campana = " + idcampana + " where usuario = ?";
+            con.query(
+                "Update agente set status = ?, campana = ? where usuario = ?",
+                [newStatus, idcampana, socket.usuario],
+                function (err, result) {
+                    if (err) throw err;
+                    console.log("Result: " + result);
+                }
+            );
+        } else {
+            con.query(
+                "Update agente set status = ? where usuario = ?",
+                [newStatus, socket.usuario],
+                function (err, result) {
+                    if (err) throw err;
+                    console.log("Result: " + result);
+                }
+            );
         }
-
-        con.query(queryDefault, [newStatus, socket.usuario], function (err, result) {
-            if (err) throw err;
-            console.log("Result: " + result);
-        });
 
         //Antes del update verifico la variable
         if (clientes[usuario] != undefined) {
