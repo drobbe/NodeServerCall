@@ -214,6 +214,7 @@ io.on("connection", function (socket) {
 
     socket.on("join", function (usuario, idcampana, nomcampana, userName, environment) {
         //test = socket.stringify();
+        idcampana = idcampana.split("|")[0];
         console.log(
             "JOIN",
             usuario,
