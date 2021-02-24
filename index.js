@@ -214,7 +214,7 @@ io.on("connection", function (socket) {
     socket.on("join", function (usuario, idcampana, nomcampana, userName, environment) {
         //test = socket.stringify();
         console.log("JOIN", usuario, idcampana, nomcampana, userName, environment);
-        if (typeof idcampana === "string") {
+        if (!isNumeric(idcampana)) {
             io.to(socket.id).emit("notificaction", { mensaje: "Seleccione una campaña valida para conectarse" });
             return;
         }
@@ -736,6 +736,9 @@ function verficiarUsuarios() {
         clientes[key].tiempo = clientes[key].tiempo + 1;
         console.log(key, clientes[key]);
     });
+}
+function isNumeric(value) {
+    return /^-?\d+$/.test(value);
 }
 setInterval(verficiarUsuarios, 1500);
 
