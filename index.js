@@ -7,6 +7,7 @@ const shellExec = require("shell-exec");
 const config = ini.parse(fs.readFileSync("/var/www/html/class/db/conf.ini", "utf-8"));
 let statusArray = require("./status.json");
 
+//mezclado a master
 console.log("Configuraciones: " + config.sigma.userDB);
 
 var options = {
