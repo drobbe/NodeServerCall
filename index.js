@@ -734,7 +734,7 @@ app.get("/usuario/:usuario/reanudar", function (req, res) {
 function verficiarUsuarios() {
     Object.keys(clientes).forEach(function (key) {
         clientes[key].tiempo = clientes[key].tiempo + 1;
-        console.log(key, clientes[key]);
+        //console.log(key, clientes[key]);
     });
 }
 function isNumeric(value) {
@@ -766,3 +766,46 @@ setInterval(function () {
             .catch(console.log);
     });
 }, 3000);
+
+const alertaAgendamientos = () => {
+    let arrayAgentes = [];
+    Object.keys(clientes).forEach(function (key) {
+        arrayAgentes.push(`'${key}'`);
+    });
+    arrayAgentes.join(",");
+
+    if (arrayAgentes.length === 0) return;
+    const query = `SELECT *, TIMESTAMPDIFF( MINUTE, agendado, NOW()) diferencia FROM llamadas_programadas WHERE agente IN ( ${arrayAgentes} ) AND now() >= agendado AND STATUS = 1 HAVING ( diferencia > 0 AND cantidad_alertas < 1 ) OR ( diferencia > 15 AND cantidad_alertas < 2 ) OR ( diferencia > 30 AND cantidad_alertas < 3 ) OR ( diferencia > 60 AND cantidad_alertas < 3)`;
+    con.query(query, function (error, results, fields) {
+        if (error) {
+            console.log("error consulta de Agendamientos", error);
+        } else {
+            results.forEach((agendamiento) => {
+                enviarAlertaAgendamiento(
+                    agendamiento,
+                    `Tiene un nuevo agendamiento disponible hace ${agendamiento.diferencia} minutos, Cliente: ${agendamiento.nombre_cliente} - ${agendamiento.rut}`
+                );
+            });
+        }
+    });
+};
+
+const enviarAlertaAgendamiento = (agendamiento, mensaje) => {
+    if (clientes[agendamiento.agente] === undefined) {
+        return;
+    }
+    data = { mensaje: mensaje, agendamiento: true };
+    io.to(clientes[agendamiento.agente].sockedId).emit("notificaction", data);
+    actualizarAlertaBD(agendamiento.id);
+};
+
+const actualizarAlertaBD = (id) => {
+    const query = `Update llamadas_programadas set cantidad_alertas = cantidad_alertas + 1 where id = ${id}`;
+    con.query(query, function (error, results, fields) {
+        if (error) {
+            console.log("error al Actualizar de Agendamientos", err);
+        }
+    });
+};
+
+setInterval(alertaAgendamientos, 10000);
