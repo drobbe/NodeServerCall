@@ -167,7 +167,7 @@ io.on("connection", function (socket) {
       //console.log("Result: " + result);
     });
 
-    console.log("Llego 5");
+    console.log("Intento de desconexión");
 
     insertTimeAgent(socket.usuario, clientes[socket.usuario].tiempo);
     //Insertar latencia y una vez obtenida insertar con el estado
@@ -188,6 +188,8 @@ io.on("connection", function (socket) {
       .catch(console.log);
 
     if (estado.cerroSesion == undefined) {
+      console.log("Cayo aqui");
+
       setTimeout(function () {
         console.log(clientes[socket.usuario].reconecto);
 
@@ -199,6 +201,7 @@ io.on("connection", function (socket) {
         }
       }, 16000);
     } else {
+      console.log("Cayo aca");
       clientes[socket.usuario].reconecto = false;
       delete clientes[socket.usuario];
       console.log("---------------No es neseario reemplzar------------------");
