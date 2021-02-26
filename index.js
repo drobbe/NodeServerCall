@@ -188,7 +188,6 @@ io.on("connection", function (socket) {
       .catch(console.log);
 
     if (estado.cerroSesion == undefined) {
-      console.log("Cayo aqui");
 
       setTimeout(function () {
         console.log(clientes[socket.usuario].reconecto);
@@ -201,7 +200,6 @@ io.on("connection", function (socket) {
         }
       }, 16000);
     } else {
-      console.log("Cayo aca");
       clientes[socket.usuario].reconecto = false;
       delete clientes[socket.usuario];
       console.log("---------------No es neseario reemplzar------------------");
@@ -699,13 +697,14 @@ app.get("/usuario/:usuario/reanudar", function (req, res) {
 function verficiarUsuarios() {
   Object.keys(clientes).forEach(function (key) {
     clientes[key].tiempo = clientes[key].tiempo + 1;
+    console.log("▒▒▒▒▒▒▒▒▒" + new Date() + "▒▒▒▒▒▒▒▒▒");
     console.log(key, clientes[key]);
   });
 }
 function isNumeric(value) {
   return /^-?\d+$/.test(value);
 }
-setInterval(verficiarUsuarios, 1500);
+
 
 setInterval(function () {
   Object.keys(clientes).forEach(function (key) {
