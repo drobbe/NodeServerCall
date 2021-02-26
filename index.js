@@ -110,7 +110,7 @@ function insertHistorico(dataInsert) {
     [dataInsert],
     function (err, result) {
       if (err) throw err;
-      console.log("Result: " + result);
+      //console.log("Result: " + result);
     }
   );
 }
@@ -164,7 +164,7 @@ io.on("connection", function (socket) {
 
     con.query("Update agente set status = 0, campana = null where usuario = ?", usuario, function (err, result) {
       if (err) throw err;
-      console.log("Result: " + result);
+      //console.log("Result: " + result);
     });
 
     console.log("Llego 5");
@@ -260,12 +260,12 @@ io.on("connection", function (socket) {
       newStatus = 11;
       con.query("Update agente set status = ?, campana = ? where usuario = ?", [newStatus, idcampana, socket.usuario], function (err, result) {
         if (err) throw err;
-        console.log("Result: " + result);
+        //console.log("Result: " + result);
       });
     } else {
       con.query("Update agente set status = ? where usuario = ?", [newStatus, socket.usuario], function (err, result) {
         if (err) throw err;
-        console.log("Result: " + result);
+        //console.log("Result: " + result);
       });
     }
 
@@ -322,7 +322,7 @@ io.on("connection", function (socket) {
 
     con.query("Update agente set status = 4 where usuario = ?", socket.usuario, function (err, result) {
       if (err) throw err;
-      console.log("Result: " + result);
+      //console.log("Result: " + result);
     });
 
     //Actualizar el tiempo del registro anterior
@@ -362,7 +362,7 @@ io.on("connection", function (socket) {
 
     con.query("Update agente set status = 1 where usuario = ?", socket.usuario, function (err, result) {
       if (err) throw err;
-      console.log("Result: " + result);
+      //console.log("Result: " + result);
     });
 
     //Actualizar el tiempo del registro anterior
@@ -419,7 +419,7 @@ io.on("connection", function (socket) {
   socket.on("baño", function (msg) {
     con.query("Update agente set status = 5 where usuario = ?", socket.usuario, function (err, result) {
       if (err) throw err;
-      console.log("Result: " + result);
+      //console.log("Result: " + result);
     });
 
     //Actualizar el tiempo del registro anterior
@@ -465,7 +465,7 @@ ami.on("eventBridgeEnter", function (data) {
 
     con.query("Update agente set status = 3 where usuario = ?", usuario, function (err, result) {
       if (err) throw err;
-      console.log("Result: " + result);
+      //console.log("Result: " + result);
     });
     io.to(clientes[usuario].sockedId).emit("llamadaContestada", { Data: data });
 
@@ -515,7 +515,7 @@ ami.on("eventHangup", function (data) {
     // [usuario,3]
     con.query("Update agente set status = 4 where usuario = ? ", usuario, function (err, result) {
       if (err) throw err;
-      console.log("Result: " + result);
+      //console.log("Result: " + result);
     });
     io.to(clientes[usuario].sockedId).emit("llamadaTerminada", { Data: data });
 
@@ -557,7 +557,7 @@ ami.on("eventNewchannel", function (data) {
       io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
       con.query("Update agente set status = 2 where usuario = ?", usuario, function (err, result) {
         if (err) throw err;
-        console.log("Result: " + result);
+        //console.log("Result: " + result);
       });
 
       //Actualizar el tiempo del registro anterior
@@ -664,7 +664,7 @@ app.get("/usuario/:usuario/reanudar", function (req, res) {
   clientes[usuario].estado = "";
   con.query("Update agente set status = 1 where usuario = ?", usuario, function (err, result) {
     if (err) throw err;
-    console.log("Result: " + result);
+    //console.log("Result: " + result);
   });
 
   //Actualizar el tiempo del registro anterior
@@ -696,7 +696,7 @@ app.get("/usuario/:usuario/reanudar", function (req, res) {
 function verficiarUsuarios() {
   Object.keys(clientes).forEach(function (key) {
     clientes[key].tiempo = clientes[key].tiempo + 1;
-    //console.log(key, clientes[key]);
+    console.log(key, clientes[key]);
   });
 }
 function isNumeric(value) {
