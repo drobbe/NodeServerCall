@@ -205,7 +205,7 @@ io.on("connection", function (socket) {
     }
   });
 
-  socket.on("join", function (usuario, idcampana, nomcampana, userName, environment) {
+  socket.on("join", function (usuario, idcampana, nomcampana, userName, environment,reconnect = true) {
     //test = socket.stringify();
     idcampana = idcampana.split("|")[0];
     console.log("JOIN", usuario, typeof idcampana, idcampana, isNumeric(idcampana), nomcampana, userName, environment);
@@ -215,7 +215,7 @@ io.on("connection", function (socket) {
     }
 
     if (clientes[usuario] != undefined) {
-      clientes[usuario].reconecto = true;
+      clientes[usuario].reconecto = reconnect;
       clientes[usuario].sockedId = socket.id;
       socket.usuario = usuario;
       socket.idcampana = idcampana;
