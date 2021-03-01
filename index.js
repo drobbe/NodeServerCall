@@ -772,4 +772,4 @@ const actualizarAlertaBD = (id) => {
 
 setInterval(alertaAgendamientos, 10000);
 
-setInterval(verficiarUsuarios, 5000);
+setInterval(verficiarUsuarios, 10000);
