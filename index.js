@@ -167,7 +167,7 @@ io.on("connection", function (socket) {
       //console.log("Result: " + result);
     });
 
-    console.log("Intento de desconexión de: " + clientes[socket.usuario].reconecto);
+    console.log("Intento de desconexión de: " + usuario);
 
     insertTimeAgent(socket.usuario, clientes[socket.usuario].tiempo);
     //Insertar latencia y una vez obtenida insertar con el estado
