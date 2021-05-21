@@ -205,7 +205,7 @@ io.on("connection", function (socket) {
     }
   });
 
-  socket.on("join", function (usuario, idcampana, nomcampana, userName, environment,reconnect = true) {
+  socket.on("join", function (usuario, idcampana, nomcampana, userName, environment, reconnect = true) {
     //test = socket.stringify();
     idcampana = idcampana.split("|")[0];
     console.log("JOIN", usuario, typeof idcampana, idcampana, isNumeric(idcampana), nomcampana, userName, environment);
@@ -554,6 +554,12 @@ ami.on("eventNewchannel", function (data) {
       }
       clientes[usuario].status = 2;
 
+      const conectedLine = data.ConnectedLineNum.split(",");
+      let server = null;
+      if (conectedLine[6] !== undefined) {
+        server === conectedLine[6];
+      }
+
       io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
       con.query("Update agente set status = 2 where usuario = ?", usuario, function (err, result) {
         if (err) throw err;
@@ -583,6 +589,11 @@ ami.on("eventNewchannel", function (data) {
         .catch(console.log);
 
       clientes[usuario].tiempo = -1;
+
+      if (server == 2000) {
+        data = { mensaje: "LLamada de transferida de voicebot", agendamiento: false };
+        io.to(clientes[usuario].sockedId).emit("notificaction", data);
+      }
     } catch (e) {
       console.log("Perdio Conexion", e);
     }
