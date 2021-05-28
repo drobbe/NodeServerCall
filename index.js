@@ -553,7 +553,7 @@ ami.on("eventNewchannel", function (data) {
         return;
       }
       clientes[usuario].status = 2;
-
+      console.log("newChannel: ", data);
       const conectedLine = data.connectedLineNum.split(",");
       let server = null;
       if (conectedLine[6] !== undefined) {
