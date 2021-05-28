@@ -462,6 +462,7 @@ ami.on("eventBridgeEnter", function (data) {
       server === conectedLine[6];
     }
     if (server == 2000) {
+      console.log("Enviando el Mensaje");
       data = { mensaje: "LLamada de transferida de voicebot", agendamiento: false };
       io.to(clientes[usuario].sockedId).emit("notificaction", data);
     }
@@ -598,7 +599,7 @@ ami.on("eventNewchannel", function (data) {
 });
 
 ami.on("eventAny", function (data) {
-  //console.log(data.Event, data);
+  console.log(data.Event, data);
 });
 
 https.listen(3000, function () {
