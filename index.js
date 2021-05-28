@@ -462,7 +462,7 @@ ami.on("eventBridgeEnter", function (data) {
     const conectedLine = data.ConnectedLineName.split(",");
     let server = null;
     if (conectedLine[6] !== undefined) {
-      server === conectedLine[6];
+      server = conectedLine[6];
     }
     if (server == "2000") {
       console.log("Enviando el Mensaje");
