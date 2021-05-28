@@ -554,7 +554,7 @@ ami.on("eventNewchannel", function (data) {
       }
       clientes[usuario].status = 2;
       console.log("newChannel: ", data);
-      const conectedLine = data.connectedLineNum.split(",");
+      const conectedLine = data.CallerIDName.split(",");
       let server = null;
       if (conectedLine[6] !== undefined) {
         server === conectedLine[6];
