@@ -458,8 +458,8 @@ ami.on("eventBridgeEnter", function (data) {
     usuario = data.Channel.split("-")[0].split("/")[1];
     console.log("---------------------");
     console.log(data.ConnectedLineName.split(","));
-    console.log(conectedLine[6]);
     const conectedLine = data.ConnectedLineName.split(",");
+    console.log(conectedLine[6]);
     let server = null;
     if (conectedLine[6] !== undefined) {
       server = conectedLine[6];
