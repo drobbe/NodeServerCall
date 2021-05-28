@@ -456,14 +456,15 @@ ami.on("eventBridgeEnter", function (data) {
     data.Context == "prueba"
   ) {
     usuario = data.Channel.split("-")[0].split("/")[1];
-    console.log("----");
+    console.log("---------------------");
     console.log(data.ConnectedLineName.split(","));
+    console.log(conectedLine[6]);
     const conectedLine = data.ConnectedLineName.split(",");
     let server = null;
     if (conectedLine[6] !== undefined) {
       server === conectedLine[6];
     }
-    if (server == 2000) {
+    if (server == "2000") {
       console.log("Enviando el Mensaje");
       data = { mensaje: "LLamada de transferida de voicebot", agendamiento: false };
       io.to(clientes[usuario].sockedId).emit("notificaction", data);
