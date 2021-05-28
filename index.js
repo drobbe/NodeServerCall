@@ -456,18 +456,7 @@ ami.on("eventBridgeEnter", function (data) {
     data.Context == "prueba"
   ) {
     usuario = data.Channel.split("-")[0].split("/")[1];
-    console.log("----");
-    console.log(data.CallerIDName.split(","));
-    const conectedLine = data.CallerIDName.split(",");
-    let server = null;
-    if (conectedLine[6] !== undefined) {
-      server === conectedLine[6];
-    }
-    if (server == 2000) {
-      console.log("Enviando el Mensaje");
-      data = { mensaje: "LLamada de transferida de voicebot", agendamiento: false };
-      io.to(clientes[usuario].sockedId).emit("notificaction", data);
-    }
+
     if (clientes[usuario] === undefined) {
       console.log("no se consiguo el usuario " + usuario);
       return;
@@ -558,6 +547,20 @@ ami.on("eventHangup", function (data) {
 ami.on("eventNewchannel", function (data) {
   if (data.Context == "from-internal" || data.Context == "preview" || data.contex == "outcall-client" || data.Context == "prueba") {
     usuario = data.Channel.split("-")[0].split("/")[1];
+
+    console.log("----");
+    console.log(data.CallerIDName.split(","));
+    const conectedLine = data.CallerIDName.split(",");
+    let server = null;
+    if (conectedLine[6] !== undefined) {
+      server === conectedLine[6];
+    }
+    if (server == 2000) {
+      console.log("Enviando el Mensaje");
+      data = { mensaje: "LLamada de transferida de voicebot", agendamiento: false };
+      io.to(clientes[usuario].sockedId).emit("notificaction", data);
+    }
+
     console.log(usuario + " ha recibido llamado", data);
     try {
       if (clientes[usuario] === undefined) {
