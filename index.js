@@ -456,6 +456,7 @@ ami.on("eventBridgeEnter", function (data) {
     data.Context == "prueba"
   ) {
     usuario = data.Channel.split("-")[0].split("/")[1];
+    console.log(data);
     const conectedLine = data.CallerIDName.split(",");
     let server = null;
     if (conectedLine[6] !== undefined) {
