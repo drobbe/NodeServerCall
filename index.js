@@ -466,8 +466,8 @@ ami.on("eventBridgeEnter", function (data) {
     }
     if (server == "2000") {
       console.log("Enviando el Mensaje");
-      data = { mensaje: "LLamada de transferida de voicebot", agendamiento: false };
-      io.to(clientes[usuario].sockedId).emit("notificaction", data);
+      msg = { mensaje: "LLamada de transferida de voicebot", agendamiento: false };
+      io.to(clientes[usuario].sockedId).emit("notificaction", msg);
     }
     if (clientes[usuario] === undefined) {
       console.log("no se consiguo el usuario " + usuario);
