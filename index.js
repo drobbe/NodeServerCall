@@ -448,7 +448,6 @@ io.on("connection", function (socket) {
 });
 
 ami.on("eventBridgeEnter", function (data) {
-  console.log(data);
   if (
     data.Context == "from-internal" ||
     data.Context == "preview" ||
@@ -457,6 +456,15 @@ ami.on("eventBridgeEnter", function (data) {
     data.Context == "prueba"
   ) {
     usuario = data.Channel.split("-")[0].split("/")[1];
+    const conectedLine = data.CallerIDName.split(",");
+    let server = null;
+    if (conectedLine[6] !== undefined) {
+      server === conectedLine[6];
+    }
+    if (server == 2000) {
+      data = { mensaje: "LLamada de transferida de voicebot", agendamiento: false };
+      io.to(clientes[usuario].sockedId).emit("notificaction", data);
+    }
     if (clientes[usuario] === undefined) {
       console.log("no se consiguo el usuario " + usuario);
       return;
@@ -553,12 +561,6 @@ ami.on("eventNewchannel", function (data) {
         return;
       }
       clientes[usuario].status = 2;
-      console.log("newChannel: ", data);
-      const conectedLine = data.CallerIDName.split(",");
-      let server = null;
-      if (conectedLine[6] !== undefined) {
-        server === conectedLine[6];
-      }
 
       io.to(clientes[usuario].sockedId).emit("llamadaConectada", { Data: data });
       con.query("Update agente set status = 2 where usuario = ?", usuario, function (err, result) {
@@ -589,11 +591,6 @@ ami.on("eventNewchannel", function (data) {
         .catch(console.log);
 
       clientes[usuario].tiempo = -1;
-
-      if (server == 2000) {
-        data = { mensaje: "LLamada de transferida de voicebot", agendamiento: false };
-        io.to(clientes[usuario].sockedId).emit("notificaction", data);
-      }
     } catch (e) {
       console.log("Perdio Conexion", e);
     }
