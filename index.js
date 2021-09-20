@@ -205,7 +205,7 @@ io.on("connection", function (socket) {
     }
   });
 
-  socket.on("join", function (usuario, idcampana, nomcampana, userName, environment, reconnect = true) {
+  socket.on("join", function (usuario, idcampana, nomcampana, userName, environment, reconnect = true, enPausa = false) {
     //test = socket.stringify();
     idcampana = idcampana.split("|")[0];
     console.log("JOIN", usuario, typeof idcampana, idcampana, isNumeric(idcampana), nomcampana, userName, environment);
@@ -223,7 +223,7 @@ io.on("connection", function (socket) {
       socket.userName = userName;
 
       if (environment !== "regi") {
-        clientes[usuario].status = 1;
+        clientes[usuario].status = enPausa === true ? 4 : 1;
       } else {
         clientes[usuario].status = 11;
       }
