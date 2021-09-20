@@ -225,10 +225,6 @@ io.on("connection", function (socket) {
       if (environment !== "regi") {
         console.log("-----", enPausa);
         clientes[usuario].status = enPausa === true ? 4 : 1;
-        if (enPausa === true) {
-          clientes[usuario].status = 4;
-        } else {
-        }
       } else {
         clientes[usuario].status = 11;
       }
